@@ -5,17 +5,11 @@ using System.Collections;
 /// キャラの移動系スクリプト
 /// </summary>
 public class Move : MonoBehaviour {
-	/// <summary>
-	/// スピードの構造体
-	/// </summary>
-	private struct Speed {
-		public float x, y;
-		public Speed(float x, float y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-	private Speed speed = new Speed(0.3f, 0.4f);
+	// 地上と空中の移動速度, 
+	public float _landSpeed = 0.3f, _skySpeed = 0.2f;
+	// 瞬間移動する距離、瞬間移動してからの脚力
+	public float _jumpA = 1.2f, _jumpB = 1500;
+
 
 	//OverlapAreaで絞る為のレイヤーマスクの変数
 	public LayerMask whatIsGround;
@@ -23,18 +17,16 @@ public class Move : MonoBehaviour {
 
 	// ジャンプ系変数
 	bool isJump, isJumoButtom;
-	int jumpTime = 0, jumpMax = 15;
 
 	// Use this for initialization
 	void Start () {
-		jumpTime = 0;
 	}
 
 	void FixedUpdate () {
 		//プレイヤー位置
 		Vector2 pos = transform.position;
 		//あたり判定四角領域の中心点
-		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 1.5f);
+		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 2.0f);
 		//あたり判定四角領域の範囲の幅
 		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.05f);
 
@@ -43,28 +35,28 @@ public class Move : MonoBehaviour {
 
 		// 左右移動
 		Vector2 Position = transform.position;
-		Position.x += Input.GetAxis("Horizontal") * speed.x;
+		if(grounded)
+			Position.x += Input.GetAxis("Horizontal") * _landSpeed;
+		else
+			Position.x += Input.GetAxis ("Horizontal") * _skySpeed;
 
-		if (Input.GetAxis ("Jump") == 1 && grounded && isJumoButtom) {
+
+		// ジャンプ
+		if (Input.GetAxis ("Jump") >= 1 && grounded && isJumoButtom) {
 			isJump = true;
 			isJumoButtom = false;
-		} else if (!(Input.GetAxis ("Jump") == 1)) {
-				if (grounded)
-					isJumoButtom = true;
+			Position.y += _jumpA;
+		} else if (!(Input.GetAxis ("Jump") >= 1) && grounded) {
+			isJumoButtom = true;
 		}
-		/////
 		if(isJump) {
-			Position.y += speed.y;
-			jumpTime++;
-			if (jumpTime == jumpMax) {
-				jumpTime = 0;
-				isJump = false;
-			}
+			this.GetComponent<Rigidbody2D>().AddForce (Vector2.up * _jumpB);
+			isJump = false;
 		}
+
+		// 落下
+		if (!isJump && !grounded)
+			isJumoButtom = false;
 		transform.position = Position;
-		Debug.Log (jumpTime + ", " + isJump);
-
-
-
-		}
+	}
 }
