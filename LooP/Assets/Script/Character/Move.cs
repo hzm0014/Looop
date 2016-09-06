@@ -15,7 +15,7 @@ public class Move : MonoBehaviour {
 			this.y = y;
 		}
 	}
-	private Speed speed = new Speed(0.1f, 0.1f);
+	private Speed speed = new Speed(0.3f, 0.3f);
 
 	// Use this for initialization
 	void Start () {
@@ -24,12 +24,14 @@ public class Move : MonoBehaviour {
 	void Update () {
 		// 左右移動
 		Vector2 Position = transform.position;
+		/*
 		if (Input.GetKey ("left")) {
 			Position.x -= speed.x;
 		} 
 		else if (Input.GetKey ("right")) {
 			Position.x += speed.x;
-		}
+		}*/
+		Position.x += Input.GetAxis("Horizontal") * speed.x;
 		transform.position = Position;
 	}
 }
