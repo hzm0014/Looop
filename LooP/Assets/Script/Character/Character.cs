@@ -26,6 +26,36 @@ public class Character : MonoBehaviour {
 	void Update () {
 	}
 	
+	//set関数群
+	void SetSpeed(float x,float y) {
+		speed.x = x;
+		speed.y = y;
+	}
+	void SetLife(float life) {
+		this.life = life;
+	}
+	void SetPower(float power) {
+		this.power = power;
+	}
+	void SetDefense(float defense) {
+		this.defense = defense;
+	}
+	
+	//get関数群
+	public Speed GetSpeed() {
+		return speed;
+	}
+	public float GetLife() {
+		return life;
+	}
+	public float GetPower() {
+		return power;
+	}
+	public float GetDefense() {
+		return defense;
+	}
+	
+	//行動関係群
 	// 移動
 	private void Move() {
 	}
