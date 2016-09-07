@@ -41,6 +41,9 @@ public class Character : MonoBehaviour {
 	void SetDefense(float defense) {
 		this.defense = defense;
 	}
+	void SetDirection(float direction) {
+		this.direction = direction;
+	}
 	
 	//get関数群
 	public float GetSpeedX() {
@@ -54,6 +57,9 @@ public class Character : MonoBehaviour {
 	}
 	public float GetDefense() {
 		return defense;
+	}
+	public float GetDirection() {
+		return direction;
 	}
 	
 	//行動関係群
@@ -71,5 +77,9 @@ public class Character : MonoBehaviour {
 	}
 	// 特技
 	protected void Specialty() {
+	}
+	//向き反転
+	void Reverse() {
+		this.direction *= -1;
 	}
 }
