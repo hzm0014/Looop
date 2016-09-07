@@ -7,6 +7,8 @@ public class Spawner : MonoBehaviour {
 	public GameObject spawnObject;
 	//発生感覚
 	public float interval;
+	//スポーンするかどうか
+	public bool isSpawn = true;
 	
 	// Use this for initialization
 	void Start () {

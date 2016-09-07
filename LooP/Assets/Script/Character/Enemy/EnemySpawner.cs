@@ -8,15 +8,18 @@ public class EnemySpawner : Spawner {
 	// Use this for initialization
 	void Start () {
 		StartCoroutine("Spawn");
+		SetIsSpawn(true);
 	}
 	
 	IEnumerator Spawn() {
 		while(true) {
-			SetPosition(Random.Range(-20.0f, 20.0f), 50.0f);
-			Instantiate(spawnObject, vec, Quaternion.identity);
-			SetInterval();
-			//interval分次の処理を待つ
-			yield return new WaitForSeconds(interval);
+			while(isSpawn) {
+				SetPosition(Random.Range(-20.0f, 20.0f), 50.0f);
+				Instantiate(spawnObject, vec, Quaternion.identity);
+				SetInterval();
+				//interval分次の処理を待つ
+				yield return new WaitForSeconds(interval);
+			}
 		}
 	}
 	
@@ -26,5 +29,8 @@ public class EnemySpawner : Spawner {
 	}
 	void SetPosition(float x,float y) {
 		vec = new Vector2(x, y);
+	}
+	void SetIsSpawn(bool b) {
+		this.isSpawn = b;
 	}
 }
