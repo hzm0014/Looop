@@ -11,7 +11,6 @@ public class StageManager : MonoBehaviour {
 	// エリアサイズ
 	int _areaSize;
 
-
 	// プレイヤーのいるエリア, プレイヤーのいるエリアの座標
 	private int _playerArea, _playerWorld;
 
@@ -20,15 +19,23 @@ public class StageManager : MonoBehaviour {
 		// ステージを生成
 		_areaNum = Random.Range(5, 8);
 		_areaSize = 20;
-		Object[] prefabs = Resources.LoadAll ("Prefavs/Stage/Set1");
+		// ゴールエリアを決定
+		int goalArea = Random.Range (0, _areaNum);
+		Object[] prefabs = Resources.LoadAll ("Prefavs/Stage/Set1/Area");
 		for (int i = 0; i < _areaNum; i++) {
-			Object area = prefabs[Random.Range (0, prefabs.Length)];
+			Object area;
+			// ゴールエリアならゴールプレハブから生成
+			if (i == goalArea) {
+				Object[] goals = Resources.LoadAll ("Prefavs/Stage/Set1/Goal");
+				area = goals[Random.Range (0, goals.Length)];
+			} else {
+				area = prefabs[Random.Range (0, prefabs.Length)];
+			}
 			Quaternion rotaition = new Quaternion (0.0f, Random.Range(0,2) * 180.0f, 0.0f, 0.0f);
 			_stage.Add (Instantiate (area, new Vector2 (i * _areaSize, 0), rotaition));
 		}
 
-
-	// プレイヤーの位置を決める
+		// プレイヤーの位置を決める
 		_playerArea = _playerWorld = _areaNum/2;
 		Vector2 v =_player.transform.position;
 		v.x = _playerArea * _areaSize;
