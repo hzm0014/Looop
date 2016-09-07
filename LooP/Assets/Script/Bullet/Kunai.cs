@@ -4,23 +4,32 @@ using System.Collections;
 public class Kunai : MonoBehaviour {
 	
 	float speed;
-	float direction;
+	float direction = 1;
 	Vector2 dropPos;
 	private Rigidbody rb;
+	public GameObject prefab;
 	
 	// Use this for initialization
 	void Awake () {
-		speed = 0.7f;
-		direction = 1;
+		speed = 0.5f;
+		//direction = transform.rotate.x / Abs(transform.rotate.x);
 		dropPos = transform.position = GameObject.Find ("Player").transform.position;
-		rb = this.GetComponent<Rigidbody>();
-		rb.useGravity = false;
+		//rb = this.GetComponent<Rigidbody>();
+		//rb.useGravity = false;
 	}
 	
 	// いろいろセッティング
 	public void SetBullet(float direction, Vector2 pos) {
 		this.direction = direction;
+		pos.x += direction * 1.01f;
 		dropPos = transform.position = pos;
+		
+		GameObject obj = (GameObject)Instantiate(prefab, transform.position, Quaternion.identity);
+		// 作成したオブジェクトを子として登録
+		obj.transform.parent = transform;
+		
+		// 5秒後にデストロイ
+		Destroy (gameObject, 5);
 	}
 	
 	// Update is called once per frame
@@ -28,13 +37,18 @@ public class Kunai : MonoBehaviour {
 		Vector2 v = transform.position;
 		v.x += speed * direction;
 		transform.position = v;
-		if ((dropPos.x - v.x) * (dropPos.x - v.x) + (dropPos.y - v.y) * (dropPos.y - v.y) > 200)
-		Destroy (gameObject);
 	}
 	
-	void OnTriggerEnter(Collider other){
-		Debug.Log("Destroy");
-		speed = 0;
+	void OnTriggerEnter2D(Collider2D other){
+		if(other.tag == "Player"){
+			Debug.Log("Destroy");
+		}
+		else if(other.tag == "Butachan") {
+			speed = 0;
+			Destroy (other);
+			Destroy (gameObject);
+			Debug.Log(other.name);
+		}
 	}
 	
 }
