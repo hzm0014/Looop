@@ -14,7 +14,13 @@ public class Kunai : MonoBehaviour {
 		direction = 1;
 		dropPos = transform.position = GameObject.Find ("Player").transform.position;
 		rb = this.GetComponent<Rigidbody>();
-        rb.useGravity = false;
+		rb.useGravity = false;
+	}
+	
+	// いろいろセッティング
+	public void SetBullet(float direction, Vector2 pos) {
+		this.direction = direction;
+		dropPos = transform.position = pos;
 	}
 	
 	// Update is called once per frame
@@ -30,4 +36,5 @@ public class Kunai : MonoBehaviour {
 		Debug.Log("Destroy");
 		speed = 0;
 	}
+	
 }
