@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections;
 //相手にダメージを与えるクラスにはIDamageGeneratorを継承させる
 public class Kunai : MonoBehaviour ,IDamageGenerator{
-	
-	float speed;
-	float direction = 1;
-	Vector2 dropPos;
+
+	// 移動スピードと移動先
+	private float speed;
+	private Vector2 vSpeed;
+
 	private Rigidbody rb;
 	public GameObject prefab;
 	public float power;
@@ -16,22 +17,15 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 	void Awake () {
 		this.power = 5.0f;
 		speed = 0.5f;
-		//direction = transform.rotate.x / Abs(transform.rotate.x);
-		dropPos = transform.position = GameObject.Find ("Player").transform.position;
-		//rb = this.GetComponent<Rigidbody>();
-		//rb.useGravity = false;
 	}
 	
 	// いろいろセッティング
-	public void SetBullet(float direction, Vector2 pos) {
-		this.direction = direction;
-		pos.x += direction * 1.01f;
-		dropPos = transform.position = pos;
-		
-		GameObject obj = (GameObject)Instantiate(prefab, transform.position, Quaternion.identity);
-		// 作成したオブジェクトを子として登録
-		obj.transform.parent = transform;
-		
+	public void SetBullet(Vector2 pos, Vector3 v) {
+		transform.position = pos;
+		transform.rotation = Quaternion.Euler(0.0f, 0.0f, v.z);
+
+		vSpeed.x = Mathf.Cos (Mathf.Deg2Rad * v.z) * speed;
+		vSpeed.y = Mathf.Sin (Mathf.Deg2Rad * v.z) * speed;
 		// 5秒後にデストロイ
 		Destroy (gameObject, 5);
 	}
@@ -39,7 +33,8 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 	// Update is called once per frame
 	void Update () {
 		Vector2 v = transform.position;
-		v.x += speed * direction;
+		v.x += vSpeed.x;
+		v.y += vSpeed.y;
 		transform.position = v;
 	}
 	
