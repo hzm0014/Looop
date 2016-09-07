@@ -108,13 +108,19 @@ public class Character : MonoBehaviour , IDamageGenerator {
 		this.direction *= -1;
 	}
 	//ダメージ
-	public void Damege(IDamageGenerator damageGenerator){
+	public void Damage(IDamageGenerator damageGenerator){
 		damage = damageGenerator.GetPower();
 		force = damageGenerator.GetForce();
 		forceSpeed = damageGenerator.GetForceSpeed();
 		
 		life -= damage;
+		if(life < 0) life = 0;
+		if(life == 0) Dead();
+		
 		GetComponent<Rigidbody>().AddForce(force * 5.0f, ForceMode.Impulse);
 		Debug.Log(life);
+	}
+	public void Dead() {
+		Destroy(gameObject);
 	}
 }

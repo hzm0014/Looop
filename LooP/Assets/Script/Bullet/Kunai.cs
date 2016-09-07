@@ -1,16 +1,20 @@
 using UnityEngine;
 using System.Collections;
-
-public class Kunai : MonoBehaviour {
+//相手にダメージを与えるクラスにはIDamageGeneratorを継承させる
+public class Kunai : MonoBehaviour ,IDamageGenerator{
 	
 	float speed;
 	float direction = 1;
 	Vector2 dropPos;
 	private Rigidbody rb;
 	public GameObject prefab;
+	public float power;
+	public Vector2 force;
+	public float forceSpeed;
 	
 	// Use this for initialization
 	void Awake () {
+		this.power = 5.0f;
 		speed = 0.5f;
 		//direction = transform.rotate.x / Abs(transform.rotate.x);
 		dropPos = transform.position = GameObject.Find ("Player").transform.position;
@@ -41,14 +45,31 @@ public class Kunai : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag == "Player"){
-			Debug.Log("Destroy");
+			//Debug.Log("Destroy");
 		}
-		else if(other.tag == "Butachan") {
-			speed = 0;
-			Destroy (other);
+		else if(other.tag == "Land") {
+			Destroy(gameObject);
+		}
+		else if(other.tag == "Enemy") {
+			this.speed = 0;
+			
+			GameObject obj = other.transform.gameObject;
+			Enemy e = obj.GetComponent<Enemy>();
+			e.Damage(this);
+			
 			Destroy (gameObject);
-			Debug.Log(other.name);
 		}
 	}
 	
+	//IDamageGeneratorを継承したら必ず書く部分
+	public float GetPower() {
+		return this.power;
+	}
+	public Vector2 GetForce() {
+		return this.force;
+	}
+	public float GetForceSpeed() {
+		return this.forceSpeed;
+	}
+	//
 }
