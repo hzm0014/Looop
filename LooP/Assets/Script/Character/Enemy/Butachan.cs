@@ -1,10 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : Character {
-	
-	public Vector2 pos;
-	public float turn;
+public class Butachan : Enemy {
 	
 	// Use this for initialization
 	void Start () {
@@ -12,23 +9,21 @@ public class Enemy : Character {
 		this.direction = -1;
 		this.turn = 10;
 		
-		SetSpeed(0.3f, 0.3f);
+		SetSpeed(0.1f, 0.3f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		pos = transform.position;
 		Move();
-		//Debug.Log("aaaa");
 	}
-	
-	public virtual void Move() {
-		if(turn < 0) direction *= -1;
-		else if(turn > 10) direction *= -1;
+	public override void Move() {
+		if(turn < 0) this.Reverse();
+		else if(turn > 10) this.Reverse();
 		
 		pos = transform.position;
 		pos.x += direction * speed.land;
-		turn += 1*direction;
+		turn += direction * speed.land;
 		
 		transform.position = pos;
 	}

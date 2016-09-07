@@ -38,16 +38,16 @@ public class Character : MonoBehaviour {
 	public void SetSpeedSky(float sky) {
 		speed.sky = sky;
 	}
-	void SetLife(float life) {
+	public void SetLife(float life) {
 		this.life = life;
 	}
-	void SetPower(float power) {
+	public void SetPower(float power) {
 		this.power = power;
 	}
-	void SetDefense(float defense) {
+	public void SetDefense(float defense) {
 		this.defense = defense;
 	}
-	void SetDirection(float direction) {
+	public void SetDirection(float direction) {
 		this.direction = direction;
 	}
 	
@@ -88,7 +88,7 @@ public class Character : MonoBehaviour {
 	protected void Specialty() {
 	}
 	//向き反転
-	void Reverse() {
+	public void Reverse() {
 		this.direction *= -1;
 	}
 }
