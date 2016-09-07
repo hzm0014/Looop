@@ -18,9 +18,15 @@ public class Player : Character {
 	public void Move(float horizon, bool grounded) {
 		Vector2 pos = transform.position;
 		if (grounded)
-			pos.x += Input.GetAxis ("Horizontal") * speed.land;
+			pos.x += horizon * speed.land;
 		else
-			pos.x += Input.GetAxis ("Horizontal") * speed.sky;
+			pos.x += horizon * speed.sky;
+		// 向きを設定
+		if (horizon > 0)
+			direction = 1;
+		else
+			direction = -1;
+
 		transform.position = pos;			
 	}
 
@@ -35,6 +41,7 @@ public class Player : Character {
 
 	// 特技；射撃
 	public void Specialty () {
-		Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
+		GameObject obj = (GameObject)Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
+		obj.GetComponent <Kunai> ().SetBullet(direction, transform.position);
 	}
 }

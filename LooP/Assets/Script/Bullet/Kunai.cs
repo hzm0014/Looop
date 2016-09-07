@@ -11,7 +11,12 @@ public class Kunai : MonoBehaviour {
 	void Awake () {
 		speed = 0.7f;
 		direction = 1;
-		dropPos = transform.position = GameObject.Find ("Player").transform.position;
+	}
+
+	// いろいろセッティング
+	public void SetBullet(float direction, Vector2 pos) {
+		this.direction = direction;
+		dropPos = transform.position = pos;
 	}
 	
 	// Update is called once per frame
