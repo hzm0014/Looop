@@ -48,10 +48,13 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 			//Debug.Log("Destroy");
 		}
 		else if(other.tag == "Land") {
+			speed = 0;
+			gameObject.layer = LayerMask.NameToLayer("Invisible");
 			Destroy(gameObject, 0.2f);
 		}
 		else if(other.tag == "Enemy") {
 			this.speed = 0;
+			gameObject.layer = LayerMask.NameToLayer("Invisible");
 			Destroy (gameObject, 0.05f);
 			
 			GameObject obj = other.transform.gameObject;
