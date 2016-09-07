@@ -91,4 +91,9 @@ public class Character : MonoBehaviour {
 	public void Reverse() {
 		this.direction *= -1;
 	}
+	//ダメージ
+	public void Damege(float damege, Vector2 force) {
+		life -= damege;
+		
+	}
 }
