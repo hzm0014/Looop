@@ -55,7 +55,7 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 		else if(other.tag == "Enemy") {
 			this.speed = 0;
 			gameObject.layer = LayerMask.NameToLayer("Invisible");
-			Destroy (gameObject, 0.05f);
+			Destroy (gameObject);
 			
 			GameObject obj = other.transform.gameObject;
 			Enemy e = obj.GetComponent<Enemy>();
