@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Character : MonoBehaviour {
 	//構造体宣言部
-	private struct Speed {
+	protected struct Speed {
 		public float x, y;
 		public Speed(float x, float y) {
 			this.x = x;
@@ -12,10 +12,11 @@ public class Character : MonoBehaviour {
 	}
 	
 	//変数宣言部
-	private Speed speed;
-	private float life;
-	private float power;
-	private float defense;
+	protected Speed speed; //素早さ
+	protected float life; //命
+	protected float power; //攻撃力
+	protected float defense; //守備力
+	protected float direction; //方向
 	
 	//関数宣言部
 	// 初期化
@@ -27,7 +28,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	//set関数群
-	void SetSpeed(float x,float y) {
+	public void SetSpeed(float x,float y) {
 		speed.x = x;
 		speed.y = y;
 	}
@@ -42,8 +43,8 @@ public class Character : MonoBehaviour {
 	}
 	
 	//get関数群
-	public Speed GetSpeed() {
-		return speed;
+	public float GetSpeedX() {
+		return speed.x;
 	}
 	public float GetLife() {
 		return life;
@@ -60,15 +61,15 @@ public class Character : MonoBehaviour {
 	private void Move() {
 	}
 	//ジャンプ
-	private void Jump() {
+	protected void Jump() {
 	}
 	// アクション
-	private void Action() {
+	protected void Action() {
 	}
 	// 通常攻撃
-	private void Attack() {
+	protected void Attack() {
 	}
 	// 特技
-	private void Specialty() {
+	protected void Specialty() {
 	}
 }
