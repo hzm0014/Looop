@@ -54,7 +54,6 @@ public class PlayerController : MonoBehaviour {
 		// 攻撃
 		if(Input.GetAxis ("Atack") >= 1 && isAtkButtom) {
 			isAtkButtom = false;
-			Debug.Log(isAtkButtom);
 			player.Specialty ();
 		} else if (!(Input.GetAxis ("Atack") >= 1)){
 			isAtkButtom = true;

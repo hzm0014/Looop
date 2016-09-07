@@ -5,6 +5,7 @@ public class Player : Character {
 	
 	public GameObject bullet;
 	private Kunai kunai;
+	public GameObject aim;
 	
 	// Use this for initialization
 	void Start () {
@@ -50,9 +51,6 @@ public class Player : Character {
 	// 特技；射撃
 	public void Specialty () {
 		GameObject obj = (GameObject)Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
-		obj.GetComponent <Kunai> ().SetBullet(direction, transform.position);
-		//Vector2 vec = transform.position;
-		//vec.x += 100.0f;
-		//Instantiate(bullet, vec, transform.rotation);
+		obj.GetComponent <Kunai> ().SetBullet(transform.position, aim.transform.localEulerAngles);
 	}
 }
