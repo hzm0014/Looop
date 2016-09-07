@@ -27,7 +27,7 @@ public class Enemy : Character {
 		else if(turn > 10) direction *= -1;
 		
 		pos = transform.position;
-		pos.x += direction * speed.x;
+		pos.x += direction * speed.land;
 		turn += 1*direction;
 		
 		transform.position = pos;

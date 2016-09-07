@@ -4,10 +4,10 @@ using System.Collections;
 public class Character : MonoBehaviour {
 	//構造体宣言部
 	protected struct Speed {
-		public float x, y;
-		public Speed(float x, float y) {
-			this.x = x;
-			this.y = y;
+		public float land, sky;
+		public Speed(float land, float sky) {
+			this.land = land;
+			this.sky = sky;
 		}
 	}
 	
@@ -28,9 +28,15 @@ public class Character : MonoBehaviour {
 	}
 	
 	//set関数群
-	public void SetSpeed(float x,float y) {
-		speed.x = x;
-		speed.y = y;
+	public void SetSpeed(float land,float sky) {
+		speed.land = land;
+		speed.sky = sky;
+	}
+	public void SetSpeedLand(float land) {
+		speed.land = land;
+	}
+	public void SetSpeedSky(float sky) {
+		speed.sky = sky;
 	}
 	void SetLife(float life) {
 		this.life = life;
@@ -46,8 +52,11 @@ public class Character : MonoBehaviour {
 	}
 	
 	//get関数群
-	public float GetSpeedX() {
-		return speed.x;
+	public float GetSpeedLand() {
+		return speed.land;
+	}
+	public float GetSpeedSky() {
+		return speed.sky;
 	}
 	public float GetLife() {
 		return life;
