@@ -12,10 +12,6 @@ public class Aim : MonoBehaviour {
 	void Update () {
 		if (Input.GetAxis ("AimH") == 0 && Input.GetAxis ("AimV") == 0)
 			return;
-		Vector2 v = transform.position;
-		v.x = transform.parent.position.x + Input.GetAxis ("AimH");
-		v.y = transform.parent.position.y + Input.GetAxis ("AimV");
-		transform.position = v;
-	
+		transform.rotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Atan2 (Input.GetAxis ("AimV"), Input.GetAxis ("AimH")) * 60);
 	}
 }
