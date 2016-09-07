@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -9,19 +9,19 @@ public class Move : MonoBehaviour {
 	public float _landSpeed = 0.3f, _skySpeed = 0.2f;
 	// 瞬間移動する距離、瞬間移動してからの脚力
 	public float _jumpA = 1.2f, _jumpB = 1500;
-
-
+	
+	
 	//OverlapAreaで絞る為のレイヤーマスクの変数
 	public LayerMask whatIsGround;
 	bool grounded = false;
-
+	
 	// ジャンプ系変数
 	bool isJump, isJumoButtom;
-
+	
 	// Use this for initialization
 	void Start () {
 	}
-
+	
 	void FixedUpdate () {
 		//プレイヤー位置
 		Vector2 pos = transform.position;
@@ -29,18 +29,18 @@ public class Move : MonoBehaviour {
 		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 2.0f);
 		//あたり判定四角領域の範囲の幅
 		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.05f);
-
+		
 		//あたり判定四角領域の範囲
 		grounded = Physics2D.OverlapArea (groundCheck + groundArea, groundCheck - groundArea, whatIsGround);
-
+		
 		// 左右移動
 		Vector2 Position = transform.position;
 		if(grounded)
-			Position.x += Input.GetAxis("Horizontal") * _landSpeed;
+		Position.x += Input.GetAxis("Horizontal") * _landSpeed;
 		else
-			Position.x += Input.GetAxis ("Horizontal") * _skySpeed;
-
-
+		Position.x += Input.GetAxis ("Horizontal") * _skySpeed;
+		
+		Debug.Log(grounded);
 		// ジャンプ
 		if (Input.GetAxis ("Jump") >= 1 && grounded && isJumoButtom) {
 			isJump = true;
@@ -53,10 +53,10 @@ public class Move : MonoBehaviour {
 			this.GetComponent<Rigidbody2D>().AddForce (Vector2.up * _jumpB);
 			isJump = false;
 		}
-
+		
 		// 落下
 		if (!isJump && !grounded)
-			isJumoButtom = false;
+		isJumoButtom = false;
 		transform.position = Position;
 	}
 }
