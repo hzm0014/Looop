@@ -117,7 +117,7 @@ public class Character : MonoBehaviour , IDamageGenerator {
 		if(life < 0) life = 0;
 		if(life == 0) Dead();
 		
-		GetComponent<Rigidbody>().AddForce(force * 5.0f, ForceMode.Impulse);
+		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		Debug.Log(life);
 	}
 	public void Dead() {

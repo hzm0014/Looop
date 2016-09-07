@@ -48,16 +48,15 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 			//Debug.Log("Destroy");
 		}
 		else if(other.tag == "Land") {
-			Destroy(gameObject);
+			Destroy(gameObject, 0.2f);
 		}
 		else if(other.tag == "Enemy") {
 			this.speed = 0;
+			Destroy (gameObject, 0.05f);
 			
 			GameObject obj = other.transform.gameObject;
 			Enemy e = obj.GetComponent<Enemy>();
 			e.Damage(this);
-			
-			Destroy (gameObject);
 		}
 	}
 	
