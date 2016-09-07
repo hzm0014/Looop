@@ -26,10 +26,14 @@ public class Player : Character {
 		else
 		pos.x += horizon * speed.sky;
 		// 向きを設定
-		if (horizon > 0)
-		direction = 1;
-		else if(horizon < 0)
-		direction = -1;
+		if (horizon > 0) {
+			direction = 1;
+			transform.rotation = Quaternion.Euler(0, 180, 0);
+		}
+		else if(horizon < 0) {
+			direction = -1;
+			transform.rotation = Quaternion.Euler(0, 0, 0);
+		}
 		
 		transform.position = pos;
 	}

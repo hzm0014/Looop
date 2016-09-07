@@ -105,6 +105,7 @@ public class Character : MonoBehaviour , IDamageGenerator {
 	}
 	//向き反転
 	public void Reverse() {
+		transform.Rotate(new Vector2(0f,180f));
 		this.direction *= -1;
 	}
 	//ダメージ
