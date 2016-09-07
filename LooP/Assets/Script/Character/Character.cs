@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Character : MonoBehaviour {
+public class Character : MonoBehaviour , IDamageGenerator {
 	//構造体宣言部
 	protected struct Speed {
 		public float land, sky;
@@ -17,6 +17,10 @@ public class Character : MonoBehaviour {
 	protected float power; //攻撃力
 	protected float defense; //守備力
 	protected float direction; //方向
+	protected float damage; //今受けたダメージ
+	protected Vector2 force; //吹き飛ばされる
+	protected float forceSpeed; //吹き飛ばされるスピード
+	
 	
 	//関数宣言部
 	// 初期化
@@ -50,6 +54,12 @@ public class Character : MonoBehaviour {
 	public void SetDirection(float direction) {
 		this.direction = direction;
 	}
+	public void SetForce(Vector2 force) {
+		this.force = force;
+	}
+	public void SetForceSpeed(float forceSpeed) {
+		this.forceSpeed = forceSpeed;
+	}
 	
 	//get関数群
 	public float GetSpeedLand() {
@@ -70,30 +80,41 @@ public class Character : MonoBehaviour {
 	public float GetDirection() {
 		return direction;
 	}
+	public Vector2 GetForce() {
+		return force;
+	}
+	public float GetForceSpeed() {
+		return forceSpeed;
+	}
 	
 	//行動関係群
 	// 移動
-	private void Move() {
+	public virtual void Move() {
 	}
 	//ジャンプ
-	protected void Jump() {
+	public virtual void Jump() {
 	}
 	// アクション
-	protected void Action() {
+	public virtual void Action() {
 	}
 	// 通常攻撃
-	protected void Attack() {
+	public virtual void Attack() {
 	}
 	// 特技
-	protected void Specialty() {
+	public virtual void Specialty() {
 	}
 	//向き反転
 	public void Reverse() {
 		this.direction *= -1;
 	}
 	//ダメージ
-	public void Damege(float damege, Vector2 force) {
-		life -= damege;
+	public void Damege(IDamageGenerator damageGenerator){
+		damage = damageGenerator.GetPower();
+		force = damageGenerator.GetForce();
+		forceSpeed = damageGenerator.GetForceSpeed();
 		
+		life -= damage;
+		GetComponent<Rigidbody>().AddForce(force * 5.0f, ForceMode.Impulse);
+		Debug.Log(life);
 	}
 }

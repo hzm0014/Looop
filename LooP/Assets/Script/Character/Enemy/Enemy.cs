@@ -22,7 +22,7 @@ public class Enemy : Character {
 		//Debug.Log("aaaa");
 	}
 	
-	public virtual void Move() {
+	public override void Move() {
 		if(turn < 0) direction *= -1;
 		else if(turn > 10) direction *= -1;
 		
