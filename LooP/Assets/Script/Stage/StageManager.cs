@@ -23,7 +23,8 @@ public class StageManager : MonoBehaviour {
 		Object[] prefabs = Resources.LoadAll ("Prefavs/Stage/Set1");
 		for (int i = 0; i < _areaNum; i++) {
 			Object area = prefabs[Random.Range (0, prefabs.Length)];
-			_stage.Add (Instantiate (area, new Vector2 (i * _areaSize, 0), new Quaternion ()));
+			Quaternion rotaition = new Quaternion (0.0f, Random.Range(0,2) * 180.0f, 0.0f, 0.0f);
+			_stage.Add (Instantiate (area, new Vector2 (i * _areaSize, 0), rotaition));
 		}
 
 
