@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// キャラの移動系スクリプト
 /// </summary>
-public class Move : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 	// 地上と空中の移動速度, 
 	public float _landSpeed = 0.3f, _skySpeed = 0.2f;
 	// 瞬間移動する距離、瞬間移動してからの脚力
@@ -16,7 +16,7 @@ public class Move : MonoBehaviour {
 	bool grounded = false;
 	
 	// ジャンプ系変数
-	bool isJump, isJumoButtom;
+	bool isJumoButtom;
 	
 	// Use this for initialization
 	void Start () {
@@ -32,31 +32,22 @@ public class Move : MonoBehaviour {
 		
 		//あたり判定四角領域の範囲
 		grounded = Physics2D.OverlapArea (groundCheck + groundArea, groundCheck - groundArea, whatIsGround);
-		
+
 		// 左右移動
-		Vector2 Position = transform.position;
-		if(grounded)
-		Position.x += Input.GetAxis("Horizontal") * _landSpeed;
-		else
-		Position.x += Input.GetAxis ("Horizontal") * _skySpeed;
-		
-		Debug.Log(grounded);
+		Player player = GetComponent<Player> ();
+		player.Move (Input.GetAxis ("Horizontal"), grounded);
+
+
 		// ジャンプ
-		if (Input.GetAxis ("Jump") >= 1 && grounded && isJumoButtom) {
-			isJump = true;
+		if (Input.GetAxis ("Jump") >= 1 && isJumoButtom) {
 			isJumoButtom = false;
-			Position.y += _jumpA;
-		} else if (!(Input.GetAxis ("Jump") >= 1) && grounded) {
+			player.Jump (grounded);
+		}
+		if (!(Input.GetAxis ("Jump") >= 1) && grounded) {
 			isJumoButtom = true;
 		}
-		if(isJump) {
-			this.GetComponent<Rigidbody2D>().AddForce (Vector2.up * _jumpB);
-			isJump = false;
-		}
-		
 		// 落下
-		if (!isJump && !grounded)
-		isJumoButtom = false;
-		transform.position = Position;
-	}
+		if (!grounded)
+			isJumoButtom = false;
+		}
 }
