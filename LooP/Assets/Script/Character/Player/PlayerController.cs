@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	}
-	
+
 	void FixedUpdate () {
 		//プレイヤー位置
 		Vector2 pos = transform.position;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 2.0f);
 		//あたり判定四角領域の範囲の幅
 		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.05f);
-		
+
 		//あたり判定四角領域の範囲
 		grounded = Physics2D.OverlapArea (groundCheck + groundArea, groundCheck - groundArea, whatIsGround);
 
@@ -42,12 +42,18 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetAxis ("Jump") >= 1 && isJumoButtom) {
 			isJumoButtom = false;
 			player.Jump (grounded);
-		}
+			}
 		if (!(Input.GetAxis ("Jump") >= 1) && grounded) {
 			isJumoButtom = true;
-		}
+			}
 		// 落下
-		if (!grounded)
+		if (!grounded) {
 			isJumoButtom = false;
 		}
+
+		// 攻撃
+		if(Input.GetAxis ("Atack") >= 1) {
+			player.Specialty ();
+		}
+	}
 }

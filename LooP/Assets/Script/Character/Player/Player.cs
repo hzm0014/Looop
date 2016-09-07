@@ -14,6 +14,7 @@ public class Player : Character {
 		
 	}
 
+	// 移動
 	public void Move(float horizon, bool grounded) {
 		Vector2 pos = transform.position;
 		if (grounded)
@@ -22,11 +23,18 @@ public class Player : Character {
 			pos.x += Input.GetAxis ("Horizontal") * speed.sky;
 		transform.position = pos;			
 	}
+
+	// ジャンプ
 	public void Jump (bool grounded) {
 		if (!grounded) return;
 		Vector2 pos = transform.position;
 		pos.y += 1.5f;
 		transform.position = pos;
 		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1500);
+	}
+
+	// 特技；射撃
+	public void Specialty () {
+		Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
 	}
 }
