@@ -28,7 +28,7 @@ public class Move : MonoBehaviour {
 		//あたり判定四角領域の中心点
 		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 2.0f);
 		//あたり判定四角領域の範囲の幅
-		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.05f);
+		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.5f);
 
 		//あたり判定四角領域の範囲
 		grounded = Physics2D.OverlapArea (groundCheck + groundArea, groundCheck - groundArea, whatIsGround);
@@ -42,6 +42,7 @@ public class Move : MonoBehaviour {
 
 
 		// ジャンプ
+		Debug.Log (grounded);
 		if (Input.GetAxis ("Jump") >= 1 && grounded && isJumoButtom) {
 			isJump = true;
 			isJumoButtom = false;
