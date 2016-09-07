@@ -8,6 +8,7 @@ public class Enemy : Character {
 	
 	// Use this for initialization
 	void Start () {
+		//transform.parent = Parent.transform;
 		pos = transform.position;
 		this.direction = -1;
 		this.turn = 10;
@@ -19,7 +20,7 @@ public class Enemy : Character {
 	void Update () {
 		pos = transform.position;
 		Move();
-		Debug.Log("aaaa");
+		//Debug.Log("aaaa");
 	}
 	
 	private void Move() {
