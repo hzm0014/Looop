@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour {
 	public LayerMask whatIsGround;
 	bool grounded = false;
 	
-	// ジャンプ系変数
-	bool isJumoButtom;
+	// ボタン管理系（連射の制限など）
+	bool isJumoButtom, isAtkButtom;
 	
 	// Use this for initialization
 	void Start () {
@@ -52,8 +52,11 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// 攻撃
-		if(Input.GetAxis ("Atack") >= 1) {
+		if(Input.GetAxis ("Atack") >= 1 && isAtkButtom) {
 			player.Specialty ();
+			isAtkButtom = false;
+		} else if (!(Input.GetAxis ("Atack") >= 1)){
+			isAtkButtom = true;
 		}
 	}
 }
