@@ -1,17 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Kunai : MonoBehaviour {
-
+	
 	float speed;
 	float direction;
 	Vector2 dropPos;
-
+	private Rigidbody rb;
+	
 	// Use this for initialization
 	void Awake () {
 		speed = 0.7f;
 		direction = 1;
 		dropPos = transform.position = GameObject.Find ("Player").transform.position;
+		rb = this.GetComponent<Rigidbody>();
+        rb.useGravity = false;
 	}
 	
 	// Update is called once per frame
@@ -20,6 +23,11 @@ public class Kunai : MonoBehaviour {
 		v.x += speed * direction;
 		transform.position = v;
 		if ((dropPos.x - v.x) * (dropPos.x - v.x) + (dropPos.y - v.y) * (dropPos.y - v.y) > 200)
-			Destroy (gameObject);
+		Destroy (gameObject);
+	}
+	
+	void OnTriggerEnter(Collider other){
+		Debug.Log("Destroy");
+		speed = 0;
 	}
 }
