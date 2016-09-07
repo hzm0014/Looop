@@ -8,7 +8,6 @@ public class Enemy : Character {
 	
 	// Use this for initialization
 	void Start () {
-		//transform.parent = Parent.transform;
 		pos = transform.position;
 		this.direction = -1;
 		this.turn = 10;
