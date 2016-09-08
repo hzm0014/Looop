@@ -52,11 +52,12 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 			this.vSpeed.x = 0;
 			this.vSpeed.y = 0;
 			gameObject.layer = LayerMask.NameToLayer("Invisible");
-			Destroy (gameObject);
 			
 			GameObject obj = other.transform.gameObject;
 			Enemy e = obj.GetComponent<Enemy>();
 			e.Damage(this);
+			
+			Destroy (gameObject);
 		}
 	}
 	

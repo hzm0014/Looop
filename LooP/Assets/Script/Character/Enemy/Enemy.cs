@@ -13,6 +13,7 @@ public class Enemy : Character {
 		this.turn = 10;
 		
 		SetSpeed(0.3f, 0.3f);
+		
 	}
 	
 	// Update is called once per frame

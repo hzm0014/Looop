@@ -20,7 +20,9 @@ public class Character : MonoBehaviour , IDamageGenerator {
 	protected float damage; //今受けたダメージ
 	protected Vector2 force; //吹き飛ばされる
 	protected float forceSpeed; //吹き飛ばされるスピード
-	
+	DamageText damageText;
+	public DamageText damageTextObj;
+	GameObject canvas;
 	
 	//関数宣言部
 	// 初期化
@@ -114,12 +116,21 @@ public class Character : MonoBehaviour , IDamageGenerator {
 		force = damageGenerator.GetForce();
 		forceSpeed = damageGenerator.GetForceSpeed();
 		
+		canvas = GameObject.Find("Canvas");
+		damageTextObj = new DamageText();
+		
+		damageText = Instantiate(damageTextObj, Vector3.zero, Quaternion.identity) as DamageText;
+		damageText.transform.SetParent(canvas.transform, false);
+		damageText.text.text = "" + damage;
+		
 		life -= damage;
+		//Debug.Log(transform.position);
+		
 		if(life < 0) life = 0;
 		if(life == 0) Dead();
 		
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
-		Debug.Log(life);
+		//Debug.Log(life);
 	}
 	public void Dead() {
 		Destroy(gameObject);

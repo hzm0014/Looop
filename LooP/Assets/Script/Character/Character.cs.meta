@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 426e02962a4ab4b39860b82f592f0371
-timeCreated: 1473223531
+timeCreated: 1473293261
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - damageTextObj: {fileID: 114000012292856490, guid: 10a84375fbd6e467096bab051f16e020,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
