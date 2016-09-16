@@ -15,6 +15,6 @@ public class CameraWork : MonoBehaviour {
 	// シーン中にフレーム毎に呼ばれる関数
 	void Update () {
 		// カメラのx座標をPlayerオブジェクトのx座標から取得y座標とz座標は現在の状態を維持
-		transform.position = new Vector3 (target.position.x, transform.position.y, transform.position.z);
+		transform.position = new Vector3 (target.position.x, target.position.y + 2.0f, transform.position.z);
 	}
 }
