@@ -7,47 +7,47 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	// 地上と空中の移動速度, 
 	public float _landSpeed = 0.3f, _skySpeed = 0.2f;
-	// 瞬間移動する距離、瞬間移動してからの脚力
-	public float _jumpA = 1.2f, _jumpB = 1500;
-	
-	
-	//OverlapAreaで絞る為のレイヤーマスクの変数
-	public LayerMask whatIsGround;
-	bool grounded = false;
-	
+
+	// 床、壁判定のためのあれこれ
+	public LayerMask whatIsGround;	// 対処になるレイヤ（Land）
+	private bool isGround;		// 地に立つ
+	private int isWall;         // 壁張り付き(-1: 左に貼り着き、1: 右に、0: 張り付いてない)
+	private Vector2 groundA;
+	private Vector2 groundB;
+
 	// ボタン管理系（連射の制限など）
 	bool isJumoButtom, isAtkButtom;
 	
 	// Use this for initialization
 	void Start () {
+		isWall = 0;
+		float r = GetComponent<CircleCollider2D> ().radius;
+		groundA = new Vector2 (-(r + 0.1f), -r);
+		groundB = new Vector2 (r + 0.1f, -r*2.0f);
 	}
 
 	void FixedUpdate () {
 		//プレイヤー位置
 		Vector2 pos = transform.position;
-		//あたり判定四角領域の中心点
-		Vector2 groundCheck = new Vector2 (pos.x, pos.y - (GetComponent<CircleCollider2D> ().radius) * 2.0f);
-		//あたり判定四角領域の範囲の幅
-		Vector2 groundArea = new Vector2 (GetComponent<CircleCollider2D> ().radius * 0.49f, 0.05f);
 
-		//あたり判定四角領域の範囲
-		grounded = Physics2D.OverlapArea (groundCheck + groundArea, groundCheck - groundArea, whatIsGround);
+		// 下方向に床があるか
+		isGround = Physics2D.OverlapArea (pos + groundA, pos + groundB, whatIsGround);
 
 		// 左右移動
 		Player player = GetComponent<Player> ();
-		player.Move (Input.GetAxis ("Horizontal"), grounded);
+		player.Move (Input.GetAxis ("Horizontal"), isGround);
 
 
 		// ジャンプ
 		if (Input.GetAxis ("Jump") >= 1 && isJumoButtom) {
 			isJumoButtom = false;
-			player.Jump (grounded);
+			player.Jump (isGround);
 			}
-		if (!(Input.GetAxis ("Jump") >= 1) && grounded) {
+		if (!(Input.GetAxis ("Jump") >= 1) && isGround) {
 			isJumoButtom = true;
 			}
 		// 落下
-		if (!grounded) {
+		if (!isGround) {
 			isJumoButtom = false;
 		}
 
@@ -58,5 +58,11 @@ public class PlayerController : MonoBehaviour {
 		} else if (!(Input.GetAxis ("Atack") >= 1)){
 			isAtkButtom = true;
 		}
+
+		//重力
+		if (isWall != 0)
+			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (isWall * 120, 0.0f));
+		else
+			GetComponent<Rigidbody2D> ().AddForce (Vector2.down * 120);
 	}
 }
