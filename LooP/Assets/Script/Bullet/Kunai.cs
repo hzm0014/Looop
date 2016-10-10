@@ -46,6 +46,7 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 			this.vSpeed.x = 0;
 			this.vSpeed.y = 0;
 			gameObject.layer = LayerMask.NameToLayer("Invisible");
+			//Debug.Log("Destroy");
 			Destroy(gameObject, 0.2f);
 		}
 		else if(other.tag == "Enemy") {
