@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		isWall = 0;
 		float r = GetComponent<CircleCollider2D> ().radius;
-		groundA = new Vector2 (-(r + 0.1f), -r);
-		groundB = new Vector2 (r + 0.1f, -r*2.0f);
+		groundA = new Vector2 (r/2, 0);
+		groundB = new Vector2 (-r/2, -r*2);
 	}
 
 	void FixedUpdate () {
@@ -61,8 +61,8 @@ public class PlayerController : MonoBehaviour {
 
 		//重力
 		if (isWall != 0)
-			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (isWall * 120, 0.0f));
+			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (isWall * 100, 0.0f));
 		else
-			GetComponent<Rigidbody2D> ().AddForce (Vector2.down * 120);
+			GetComponent<Rigidbody2D> ().AddForce (Vector2.down * 100);
 	}
 }

@@ -21,11 +21,11 @@ public class DungeonGenrator : MonoBehaviour {
 	/// <summary>
 	/// 区画と部屋の余白サイズ
 	/// </summary>
-	const int OUTER_MERGIN = 3;
+	const int OUTER_MERGIN = 1;
 	/// <summary>
 	/// 部屋配置の余白サイズ
 	/// </summary>
-	const int POS_MERGIN = 2;
+	const int POS_MERGIN = 1;
 	/// <summary>
 	/// 最小の部屋サイズ
 	/// </summary>
@@ -33,13 +33,13 @@ public class DungeonGenrator : MonoBehaviour {
 	/// <summary>
 	/// 最大の部屋サイズ
 	/// </summary>
-	const int MAX_ROOM = 5;
+	const int MAX_ROOM = 8;
 
 
 	const int NONE = 0, WALL = 1;
 	// Use this for initialization
 	void Start () {
-		GenerateDungeon (50, 50);
+		GenerateDungeon (30, 30);
 		}
 
 	// Update is called once per frame
@@ -62,8 +62,8 @@ public class DungeonGenrator : MonoBehaviour {
 		CreateDivision (0, 0, width - 1, height - 1);
 
 		// 区画を分割
-		bool bVertical = (Random.Range (0, 2) == 0);
-		SplitDivision (bVertical);
+		//bool bVertical = (Random.Range (0, 2) == 0);
+		SplitDivision (false);
 
 		// 部屋を作る
 		CreateRoom ();
