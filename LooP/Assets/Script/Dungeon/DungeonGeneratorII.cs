@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// ダンジョンを生成する
 /// </summary>
 public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
-	protected DungeonGeneratorII(){}
+	protected DungeonGeneratorII () { }
 
 	/// <summary>
 	/// ダンジョン情報
@@ -40,6 +40,13 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	const int wallSize = 30;
 
 	/// <summary>
+	/// ボス戦の周期
+	/// </summary>
+	const int EntryCycle = 3;
+	const int BattleCycle = 10;
+	public GameObject Boss;
+
+	/// <summary>
 	/// ダンジョンを生成するオブジェクト
 	/// ブロック，ゴール．敵のスポーン
 	/// </summary>
@@ -52,14 +59,22 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	void Start () {
 		_floorNum = 0;
 		GenerateDungeon ();
-	}
+		}
 
 	/// <summary>
 	/// ダンジョン生成
 	/// </summary>
-	public void GenerateDungeon() {
+	public void GenerateDungeon () {
 		_floorNum++;
 		floorText.GetComponent<Text> ().text = "B" + _floorNum;
+
+		if (_floorNum % BattleCycle == EntryCycle)
+			Instantiate (Boss, new Vector2 (0, 0), new Quaternion ());
+
+		if(_floorNum % BattleCycle == 0) {
+			GenerateBossFloor ();
+			return;
+		}
 
 		width = (int)Random.Range (20, 50);
 		height = (int)Random.Range (10, 25);
@@ -82,7 +97,6 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 
 		// 部屋を繋ぐ
 		ConnectRooms ();
-
 		// スタートとゴールを決める
 		DgDivision startRoom = _divList[Random.Range (0, _divList.Count - 1)];
 		int start = Random.Range (startRoom.Room.Left + 1, startRoom.Room.Right);
@@ -93,15 +107,48 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 		// スタートとゴールの穴を開ける
 		BitFloor (start, goal);
 
+
 		// タイルを配置
 		Setblock (_floor, start, goal);
+		SetBigWall (start, goal);
 
 		// 主人公を配置
-		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize*2/3);
+		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize * 2 / 3);
 		// spawnerの設定
 		EnemySpawner.StartSpawn (_floor, 3, 5);
 		// アイテムを設置
 		ItemGenerator.RandomDeploy (_floor, 10);
+	}
+
+	/// <summary>
+	/// ボスフロアを生成
+	/// </summary>
+	public GameObject BossStage;
+	private GameObject stage;
+	public void GenerateBossFloor () {
+		Debug.Log ("Bossstage");
+		width = 15;
+		height = 15;
+		_floor = new Layer2D (width, height);
+		_floor.Fill (NONE);
+		_divList = new List<DgDivision> ();
+		int start = 5;
+		int goal = 5;
+		SetBigWall (start, goal);
+		// ボスを戦闘モードに
+		GameObject.Find ("Boss").GetComponent<Boss>().ShiftButtleMode(100, 50);
+		// ステージ生成
+		stage = (GameObject)Instantiate (BossStage, new Vector2((float)width/2, (float)height/2), new Quaternion ());
+		stage.transform.parent = gameObject.transform;
+		// 主人公を配置
+		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize * 2 / 3);
+	}
+
+	/// <summary>
+	/// ボスフロアクリア
+	/// </summary>
+	public void ClearBossFloor() {
+		Destroy (stage);
 	}
 
 	/// <summary>
@@ -395,7 +442,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	/// タイルを設置
 	/// </summary>
 	/// <param name="floor">Floor.</param>
-	private void Setblock(Layer2D floor, int start, int goal) {
+	private void Setblock (Layer2D floor, int start, int goal) {
 		GameObject obj;
 		float stock = 0;
 		for (int i = 0; i < floor.Width; i++) {
@@ -403,12 +450,12 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 				if (floor.Get (i, j) == WALL) {
 					stock++;
 					// 壁生成
-					if (floor.Get (i, j+1) <= NONE || j == floor.Height-2) {
-						obj = (GameObject)Instantiate (block, new Vector2 (i, j-stock/2+0.5f), new Quaternion ());
+					if (floor.Get (i, j + 1) <= NONE || j == floor.Height - 2) {
+						obj = (GameObject)Instantiate (block, new Vector2 (i, j - stock / 2 + 0.5f), new Quaternion ());
 						obj.transform.localScale = new Vector2 (1, stock);
 						obj.transform.parent = gameObject.transform;
 						stock = 0;
-					}
+						}
 
 					// 左右のつなぎ目を埋める
 					int right = 0;
@@ -418,13 +465,19 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 					if (floor.Get (i - 1, j) != NONE)
 						left = 1;
 					if (right == 0 && left == 0) break;
-					obj = (GameObject)Instantiate (block, new Vector2 (i+(right-left)*0.5f, j), new Quaternion ());
-					obj.transform.localScale = new Vector2 (right+left, 1);
+					obj = (GameObject)Instantiate (block, new Vector2 (i + (right - left) * 0.5f, j), new Quaternion ());
+					obj.transform.localScale = new Vector2 (right + left, 1);
 					obj.transform.parent = gameObject.transform;
 				}
 			}
 		}
-		// 大壁の生成
+	}
+
+	/// <summary>
+	/// 大壁の生成
+	/// </summary>
+	private void SetBigWall(int start, int goal) {
+		GameObject obj;
 		// 左
 		obj = (GameObject)Instantiate (block, new Vector2 (-wallSize/2, height/2), new Quaternion ());
 		obj.transform.localScale = new Vector2(wallSize, height+wallSize*2);
