@@ -9,27 +9,29 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 
 	private Rigidbody rb;
 	public GameObject prefab;
-	public float power;
+	public float _atk;
 	public Vector2 force;
 	public float forceSpeed;
 	
 	// Use this for initialization
 	void Awake () {
-		this.power = 5.0f;
+		this._atk = 1.0f;
 		speed = 0.5f;
 	}
 	
 	// いろいろセッティング
-	public void SetBullet(Vector2 pos, Vector3 v) {
+	public void SetBullet(Vector2 pos, Vector3 v, float playerPower) {
 		transform.position = pos;
 		transform.rotation = Quaternion.Euler(0.0f, 0.0f, v.z);
 		force = new Vector2(Mathf.Cos(Mathf.Deg2Rad * v.z)* 0.1f, Mathf.Sin(Mathf.Deg2Rad * v.z)*0.1f);
 		forceSpeed = 1.0f;
+		this._atk *= playerPower;
 		
 		vSpeed.x = Mathf.Cos (Mathf.Deg2Rad * v.z) * speed;
 		vSpeed.y = Mathf.Sin (Mathf.Deg2Rad * v.z) * speed;
 		// 5秒後にデストロイ
 		Destroy (gameObject, 5);
+		Debug.Log(GetPower());
 	}
 	
 	// Update is called once per frame
@@ -65,7 +67,7 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 	
 	//IDamageGeneratorを継承したら必ず書く部分
 	public float GetPower() {
-		return this.power;
+		return this._atk;
 	}
 	public Vector2 GetForce() {
 		return this.force;
