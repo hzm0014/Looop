@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		isWall = 0;
 		float r = GetComponent<CircleCollider2D> ().radius;
 		groundA = new Vector2 (r/2, 0);
 		groundB = new Vector2 (-r/2, -r*2);
@@ -54,9 +53,8 @@ public class PlayerController : MonoBehaviour {
 		if (!isGround) {
 			isJumoButtom = false;
 		}
-		Debug.Log (myRigidbody.velocity.magnitude + ", " + maxSpeed);
+		// 速度制限
 		if (myRigidbody.velocity.magnitude > maxSpeed) {
-			Debug.Log ("safety");
 			myRigidbody.velocity = Vector3.ClampMagnitude (myRigidbody.velocity, maxSpeed);
 		}
 
