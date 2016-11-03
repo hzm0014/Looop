@@ -94,9 +94,31 @@ public class Player : Character {
 			//Debug.Log(life);
 		}
 	}
+
+	/// <summary>
+	/// 回復
+	/// </summary>
+	/// <param name="power">回復量</param>
+	public virtual void Heal (float power) {
+		_life = Mathf.Min (_life + power, _maxLife);
+		// ライフのUIをUpdate
+		UpdateLifeUI ();
+	}
+
 	// 死亡関数
 	public void GameOver () {
 		Debug.Log ("dead");
+	}
+
+	/// <summary>
+	/// ステータスの上昇
+	/// </summary>
+	public override void StatusUp (string target, float power) {
+		Debug.Log ("aaaa");
+		if (target == "atk")
+			_atk += power;
+		else if (target == "life")
+			Heal (power);
 	}
 	
 	// 無敵時間コルーチン内部
