@@ -11,6 +11,7 @@ public class Enemy : Character {
 		pos = transform.position;
 		this.direction = -1;
 		this.turn = 10;
+		this.power = 1;
 		
 		SetSpeed(0.3f, 0.3f);
 	}
@@ -31,5 +32,14 @@ public class Enemy : Character {
 		turn += 1*direction;
 		
 		transform.position = pos;
+	}
+	
+	//接触判定
+	void OnTriggerEnter2D(Collider2D other){
+		if(other.tag == "Player") {
+			GameObject obj = other.transform.gameObject;
+			Player p = obj.GetComponent<Player>();
+			p.Damage(this);
+		}
 	}
 }

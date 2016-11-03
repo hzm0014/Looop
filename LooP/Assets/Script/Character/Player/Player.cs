@@ -11,6 +11,8 @@ public class Player : Character {
 	void Start () {
 		speed.land = 0.3f;
 		speed.sky = 0.2f;
+		this.life = 10;
+		this.power = 100;
 		kunai = GetComponent<Kunai> ();
 	}
 	
@@ -52,5 +54,9 @@ public class Player : Character {
 	public void Specialty () {
 		GameObject obj = (GameObject)Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
 		obj.GetComponent <Kunai> ().SetBullet(transform.position, aim.transform.localEulerAngles);
+	}
+	
+	public void Dead() {
+		Debug.Log("you are died!");
 	}
 }
