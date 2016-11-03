@@ -42,9 +42,6 @@ public class Player : Character {
 	// ジャンプ
 	public void Jump (bool grounded) {
 		if (!grounded) return;
-		Vector2 pos = transform.position;
-		//pos.y += 1.5f;
-		transform.position = pos;
 		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1500);
 	}
 	

@@ -407,12 +407,24 @@ public class DungeonGeneratorII : MonoBehaviour {
 				if (floor.Get (i, j) == WALL) {
 					stock++;
 					// 壁生成
-					if (floor.Get (i, j+1) <= NONE || j == floor.Height - 1) {
-						obj = (GameObject)Instantiate (block, new Vector2 (i, j-stock/2), new Quaternion ());
+					if (floor.Get (i, j+1) <= NONE || j == floor.Height-2) {
+						obj = (GameObject)Instantiate (block, new Vector2 (i, j-stock/2+0.5f), new Quaternion ());
 						obj.transform.localScale = new Vector2 (1, stock);
 						obj.transform.parent = gameObject.transform;
 						stock = 0;
 					}
+
+					int right = 0;
+					int left = 0;
+					if (floor.Get (i + 1, j) != NONE)
+						right = 1;
+					if (floor.Get (i - 1, j) != NONE)
+						left = 1;
+					if (right == 0 && left == 0) break;
+
+					obj = (GameObject)Instantiate (block, new Vector2 (i+(right-left)*0.5f, j), new Quaternion ());
+					obj.transform.localScale = new Vector2 (right+left, 1);
+					obj.transform.parent = gameObject.transform;
 				}
 			}
 		}
