@@ -54,10 +54,8 @@ public class PlayerController : MonoBehaviour {
 			isJumoButtom = false;
 		}
 		// 速度制限
-		if (myRigidbody.velocity.magnitude > maxSpeed) {
-			Debug.Log ("a");
+		if (myRigidbody.velocity.magnitude > maxSpeed)
 			myRigidbody.velocity = Vector3.ClampMagnitude (myRigidbody.velocity, maxSpeed);
-		}
 
 		// 攻撃
 		if(Input.GetAxis ("Atack") >= 1 && isAtkButtom) {
