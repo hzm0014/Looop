@@ -5,15 +5,16 @@ public class Spawner : MonoBehaviour {
 	//発生するObjectを指定する用
 	public GameObject spawnObject;
 	//発生感覚
-	public float interval;
+	public float interval { set; get; }
 	//スポーンするかどうか
-	public bool isSpawn = true;
+	public bool isSpawn { set; get; }
 	
 	// Use this for initialization
 	void Start () {
 		SetInterval(3.0f);
 		//コルーチンの開始
 		StartCoroutine("Spawn");
+		isSpawn = false;
 	}
 	
 	IEnumerator Spawn() {

@@ -1,49 +1,64 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemySpawner : Spawner {
-	
-	Vector2 vec;
-	Vector2 startPos;
-	Vector2 size;
-	
-	public EnemySpawner(float x,float y, float width, float height, int Interval) {
-		SetRange(x,y,width,height);
-		SetInterval(Interval);
+public class EnemySpawner : Singleton<EnemySpawner> {
+	protected EnemySpawner() {}
+
+	/// <summary>
+	/// 部屋の情報
+	/// </summary>
+	public Layer2D _floor = null;
+
+	/// <summary>
+	/// 最大試行回数
+	/// この回数失敗すると敵は現れない
+	/// </summary>
+	const int MAX = 12;
+
+	/// <summary>
+	/// 生成する敵（現在１種のため直接放り込む）
+	/// </summary>
+	public GameObject _spawnObj;
+
+	/// <summary>
+	/// 敵の生成を開始する
+	/// </summary>
+	/// <param name="floor">フロアの構造情報</param>
+	/// <param name="initNum">初期の敵数</param>
+	/// <param name="interval">敵出現周期(秒）</param>
+	private void _StartSpawn (Layer2D floor, int initNum, float interval) {
+		_floor = floor;
+		for (int i = 0; i < initNum; i++)
+			Spawn ();
+		StartCoroutine ("SpawnCycle", interval);
 	}
-	
-	// Use this for initialization
-	void Start () {
-		StartCoroutine("Spawn");
-		SetIsSpawn(true);
+	public static void StartSpawn(Layer2D floor, int initNum, float interval) {
+		Instance._StartSpawn (floor, initNum, interval);
 	}
-	
-	IEnumerator Spawn() {
-		while(true) {
-			while(isSpawn) {
-				SetPosition(Random.Range(startPos.x, startPos.x+size.x), Random.Range(startPos.y, startPos.y+size.y));
-				Instantiate(spawnObject, vec, Quaternion.identity);
-				//interval分次の処理を待つ
-				yield return new WaitForSeconds(interval);
-			}
+
+	/// <summary>
+	/// 敵生成のサイクル
+	/// </summary>
+	/// <returns>The cycle.</returns>
+	private IEnumerator SpawnCycle (float interval) {
+		while (true) {
+			Spawn ();
+			yield return new WaitForSeconds (interval);
 		}
 	}
-	
-	void SetInterval(int i) {
-		//出現頻度の調整
-		this.interval = i;
-	}
-	void SetPosition(float x,float y) {
-		vec = new Vector2(x, y);
-	}
-	void SetRange(float x, float y, float width, float height) {
-		startPos = new Vector2(x,y);
-		size = new Vector2(width,height);
-	}
-	void SetIsSpawn(bool b) {
-		this.isSpawn = b;
-	}
-	void Vanish() {
-		Destroy(this);
+
+	/// <summary>
+	/// 敵モンスターを生成
+	/// </summary>
+	private void Spawn() {
+		for (int i = 0; i < MAX; i++) {
+			int x = Random.Range (1, _floor.Width);
+			int y = Random.Range (1, _floor.Height);
+			if (_floor.Get (x, y) == 0) {
+				GameObject obj = (GameObject)Instantiate (_spawnObj, new Vector2 (x, y), Quaternion.identity);
+				obj.transform.SetParent (GameObject.Find ("Dungeon").transform);
+				break;
+			}
+		}
 	}
 }

@@ -8,7 +8,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// <summary>
 	/// ダンジョン情報
 	/// </summary>
-	Layer2D _layer = null;
+	Layer2D _floor = null;
 	/// <summary>
 	/// 区画リスト
 	/// </summary>
@@ -31,11 +31,15 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// </summary>
 	const int MAX_ROOM = 8;
 
-	const int SUPERNONE = -1, NONE = 0, WALL = 1;
+	const int NONE = 0, WALL = 1;
 
 	int width, height;
 	const int wallSize = 30;
 
+	/// <summary>
+	/// ダンジョンを生成するオブジェクト
+	/// ブロック，ゴール．敵のスポーン
+	/// </summary>
 	public GameObject block, goalObj;
 
 	// Use this for initialization
@@ -50,11 +54,11 @@ public class DungeonGeneratorII : MonoBehaviour {
 		width = (int)Random.Range (20, 70);
 		height = (int)Random.Range (10, 25);
 
-		_layer = new Layer2D (width, height);
+		_floor = new Layer2D (width, height);
 		_divList = new List<DgDivision> ();
 
 		// すべてを壁に
-		_layer.Fill (WALL);
+		_floor.Fill (WALL);
 
 		// 一つ目の区画
 		CreateDivision (0, 0, width - 1, height - 1);
@@ -80,19 +84,17 @@ public class DungeonGeneratorII : MonoBehaviour {
 		BitFloor (start, goal);
 
 		// タイルを配置
-		Setblock (_layer, start, goal);
+		Setblock (_floor, start, goal);
 
 		// 主人公を配置
 		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize*2/3);
+		// spawnerの設定
+		EnemySpawner.StartSpawn (_floor, 3, 5);
 	}
 
 	/// <summary>
 	/// 区画の生成
 	/// </summary>
-	/// <param name="left">Left.</param>
-	/// <param name="top">Top.</param>
-	/// <param name="right">Right.</param>
-	/// <param name="bottom">Bottom.</param>
 	private void CreateDivision (int left, int top, int right, int bottom) {
 		DgDivision div = new DgDivision ();
 		div.Outer.Set (left, top, right, bottom);
@@ -220,7 +222,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// </summary>
 	/// <param name="rect">矩形情報</param>
 	private void FillDgRect (DgDivision.DgRect r) {
-		_layer.FillRectLTRB (r.Left, r.Top, r.Right, r.Bottom, NONE);
+		_floor.FillRectLTRB (r.Left, r.Top, r.Right, r.Bottom, NONE);
 		}
 
 	/// <summary>
@@ -336,7 +338,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 			left = right;
 			right = tmp;
 			}
-		_layer.FillRectLTRB (left, y, right + 1, y + 1, NONE);
+		_floor.FillRectLTRB (left, y, right + 1, y + 1, NONE);
 		}
 
 	/// <summary>
@@ -352,7 +354,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 			top = bottom;
 			bottom = tmp;
 			}
-		_layer.FillRectLTRB (x, top, x + 1, bottom + 1, NONE);
+		_floor.FillRectLTRB (x, top, x + 1, bottom + 1, NONE);
 	}
 
 	/// <summary>
@@ -362,16 +364,16 @@ public class DungeonGeneratorII : MonoBehaviour {
 		// スタートの穴掘り
 		int y = height;
 		while (y > 0) {
-			_layer.Set (start, y, NONE);
-			if (_layer.Get (start, y-1) == NONE)
+			_floor.Set (start, y, NONE);
+			if (_floor.Get (start, y-1) == NONE)
 				break;
 			y--;
 		}
 
 		y = 0;
 		while(y < height) {
-			_layer.Set (goal, y, NONE);
-			if (_layer.Get (goal, y + 1) == NONE)
+			_floor.Set (goal, y, NONE);
+			if (_floor.Get (goal, y + 1) == NONE)
 				break;
 			y++;
 		}
