@@ -177,8 +177,8 @@ public class Player : Character {
 				}
 				else {
 					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 10.0f);
-					//e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y);
-					e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 1.0f);
+					e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y);
+					//e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 1.0f);
 				}
 			}
 			else {
