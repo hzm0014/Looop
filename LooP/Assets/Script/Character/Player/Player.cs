@@ -25,6 +25,7 @@ public class Player : Character {
 		speed.sky = 0.2f;
 		_life = _maxLife = 10;
 		_atk = 100;
+		forceSpeed = 5.0f;
 		// スプライト
 		MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		// UIの更新
@@ -94,7 +95,7 @@ public class Player : Character {
 			//Debug.Log(life);
 		}
 	}
-
+	
 	/// <summary>
 	/// 回復
 	/// </summary>
@@ -104,23 +105,23 @@ public class Player : Character {
 		// ライフのUIをUpdate
 		UpdateLifeUI ();
 	}
-
+	
 	// 死亡関数
 	public void GameOver () {
 		Debug.Log ("dead");
 	}
-
+	
 	/// <summary>
 	/// ステータスの上昇
 	/// </summary>
 	public override void StatusUp (string target, float power) {
 		if (target == "atk")
-			_atk += power;
+		_atk += power;
 		else if (target == "life")
-			Heal (power);
+		Heal (power);
 	}
 	
-	// 無敵時間コルーチン内部
+	// ダメージ無敵時間コルーチン内部
 	IEnumerator Invincible() {
 		
 		//レイヤーをPlayerDamageに変更
@@ -155,7 +156,28 @@ public class Player : Character {
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag == "Enemy") {
-			hit = true;
+			GameObject obj = other.transform.gameObject;
+			Enemy e = obj.GetComponent<Enemy>();
+			BoxCollider2D bc = (BoxCollider2D)other;
+			
+			float gap = pos.y - e.GetPosition().y;
+			float margin = this.GetComponent<BoxCollider2D>().size.y/2+bc.size.y/2;
+			if( gap >= margin ) {
+				// LayerNo.11 == "Ghost"のため
+				Debug.Log(obj.layer);
+				if(obj.layer != 11) {
+					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 20.0f);
+					e.Damage(this, e.GetLife());
+				}
+				else {
+					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 10.0f);
+					e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y);
+					//e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 1.0f);
+				}
+			}
+			else {
+				hit = true;
+			}
 		}
 	}
 	void OnTriggerExit2D(Collider2D other){
