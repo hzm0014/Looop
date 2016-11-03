@@ -55,8 +55,21 @@ public class Player : Character {
 		GameObject obj = (GameObject)Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
 		obj.GetComponent <Kunai> ().SetBullet(transform.position, aim.transform.localEulerAngles);
 	}
-	
+	//ダメージ
+	public void Damage(IDamageGenerator damageGenerator){
+		damage = damageGenerator.GetPower();
+		force = damageGenerator.GetForce();
+		forceSpeed = damageGenerator.GetForceSpeed();
+		
+		life -= damage;
+		if(life < 0) life = 0;
+		if(life == 0) Dead();
+		
+		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		//Debug.Log(life);
+	}
+	//死亡関数
 	public void Dead() {
-		Debug.Log("you are died!");
+		Debug.Log("dead");
 	}
 }
