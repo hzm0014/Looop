@@ -14,7 +14,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	//変数宣言部
 	protected Speed speed; //素早さ
 	protected float life; //命
-	protected float power; //攻撃力
+	public float _atk { get; set;} //攻撃力
 	protected float defense; //守備力
 	protected float direction; //方向
 	protected float damage; //今受けたダメージ
@@ -52,7 +52,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	}
 	// [S5] 攻撃力の設定
 	public void SetPower(float power) {
-		this.power = power;
+		this._atk = power;
 	}
 	// [S5] 防御力の設定
 	public void SetDefense(float defense) {
@@ -86,7 +86,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	}
 	// [G4] 攻撃力
 	public float GetPower() {
-		return power;
+		return _atk;
 	}
 	// [G5] 防御力
 	public float GetDefense() {

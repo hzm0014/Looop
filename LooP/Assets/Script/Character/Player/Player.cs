@@ -15,7 +15,7 @@ public class Player : Character {
 		speed.land = 0.3f;
 		speed.sky = 0.2f;
 		this.life = 10;
-		this.power = 100;
+		this._atk = 100;
 		// スプライト
 		MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 	}

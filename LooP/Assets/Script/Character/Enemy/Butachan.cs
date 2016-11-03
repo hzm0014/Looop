@@ -9,7 +9,7 @@ public class Butachan : Enemy {
 		this.direction = -1;
 		this.turn = 10;
 		this.life = 10.0f;
-		this.power = 1.0f;
+		this._atk = 1.0f;
 		this.forceSpeed = 0.1f;
 		SetSpeed(0.1f, 0.3f);
 	}
