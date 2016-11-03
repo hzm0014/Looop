@@ -14,13 +14,13 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 groundA;
 	private Vector2 groundB;
 
+	// ボタン管理系（連射の制限など）
+	bool isJumoButtom, isAtkButtom;
+
+	// 速度制限
 	private float maxSpeed = 30.0f;
 	private Rigidbody2D myRigidbody;
 
-
-	// ボタン管理系（連射の制限など）
-	bool isJumoButtom, isAtkButtom;
-	
 	// Use this for initialization
 	void Start () {
 		float r = GetComponent<CircleCollider2D> ().radius;
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		// 速度制限
 		if (myRigidbody.velocity.magnitude > maxSpeed) {
+			Debug.Log ("a");
 			myRigidbody.velocity = Vector3.ClampMagnitude (myRigidbody.velocity, maxSpeed);
 		}
 
