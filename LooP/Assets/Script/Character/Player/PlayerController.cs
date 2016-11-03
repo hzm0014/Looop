@@ -11,9 +11,12 @@ public class PlayerController : MonoBehaviour {
 	// 床、壁判定のためのあれこれ
 	public LayerMask whatIsGround;	// 対処になるレイヤ（Land）
 	private bool isGround;		// 地に立つ
-	private int isWall;         // 壁張り付き(-1: 左に貼り着き、1: 右に、0: 張り付いてない)
 	private Vector2 groundA;
 	private Vector2 groundB;
+
+	private float maxSpeed = 30.0f;
+	private Rigidbody2D myRigidbody;
+
 
 	// ボタン管理系（連射の制限など）
 	bool isJumoButtom, isAtkButtom;
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 		float r = GetComponent<CircleCollider2D> ().radius;
 		groundA = new Vector2 (r/2, 0);
 		groundB = new Vector2 (-r/2, -r*2);
+		myRigidbody = this.GetComponent<Rigidbody2D> ();
 	}
 
 	void FixedUpdate () {
@@ -49,6 +53,11 @@ public class PlayerController : MonoBehaviour {
 		// 落下
 		if (!isGround) {
 			isJumoButtom = false;
+		}
+		Debug.Log (myRigidbody.velocity.magnitude + ", " + maxSpeed);
+		if (myRigidbody.velocity.magnitude > maxSpeed) {
+			Debug.Log ("safety");
+			myRigidbody.velocity = Vector3.ClampMagnitude (myRigidbody.velocity, maxSpeed);
 		}
 
 		// 攻撃

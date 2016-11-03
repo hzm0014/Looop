@@ -6,7 +6,8 @@ public class Player : Character {
 	public GameObject bullet;
 	private Kunai kunai;
 	public GameObject aim;
-	
+
+
 	// Use this for initialization
 	void Start () {
 		speed.land = 0.3f;
