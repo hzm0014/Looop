@@ -8,6 +8,8 @@ public class Player : Character {
 	public GameObject aim;
 	
 	public GameObject lifeUI;
+
+	public GameObject gameOver;
 	
 	// 画像系
 	SpriteRenderer MainSpriteRenderer;
@@ -108,6 +110,10 @@ public class Player : Character {
 	// 死亡関数
 	public void GameOver () {
 		Debug.Log ("dead");
+		GetComponent<Rigidbody2D> ().AddForce (new Vector2 (100.0f, 100.0f), ForceMode2D.Impulse);
+		GetComponent<BoxCollider2D> ().enabled = false;
+		GetComponent<CircleCollider2D> ().enabled = false;
+		gameOver.SetActive (true);
 	}
 
 	/// <summary>
