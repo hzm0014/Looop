@@ -49,8 +49,6 @@ public class DungeonGeneratorII : MonoBehaviour {
 	public void GenerateDungeon() {
 		width = (int)Random.Range (20, 70);
 		height = (int)Random.Range (10, 25);
-		int start = Random.Range (2, width-1);
-		int goal = Random.Range (2, width-1);
 
 		_layer = new Layer2D (width, height);
 		_divList = new List<DgDivision> ();
@@ -63,13 +61,20 @@ public class DungeonGeneratorII : MonoBehaviour {
 		_divList[0].start = _divList[0].goal = true;
 
 		// 区画を分割
-		SplitDivision (false, start, goal);
+		SplitDivision (false);
 
 		// 部屋を作る
-		CreateRoom (start);
+		CreateRoom ();
 
 		// 部屋を繋ぐ
 		ConnectRooms ();
+
+		// スタートとゴールを決める
+		DgDivision startRoom = _divList[Random.Range (0, _divList.Count - 1)];
+		int start = Random.Range (startRoom.Room.Left + 1, startRoom.Room.Right);
+		DgDivision goalRoom = _divList[Random.Range (0, _divList.Count - 1)];
+		int goal = Random.Range (goalRoom.Room.Left + 1, goalRoom.Room.Right);
+
 
 		// スタートとゴールの穴を開ける
 		BitFloor (start, goal);
@@ -95,7 +100,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 	}
 
 
-	private void SplitDivision (bool bVertical, int start, int goal) {
+	private void SplitDivision (bool bVertical) {
 		// 末尾(親区画)の取り出し
 		DgDivision parent = _divList[_divList.Count - 1];
 		_divList.Remove (parent);
@@ -121,14 +126,6 @@ public class DungeonGeneratorII : MonoBehaviour {
 			child.Outer.Set (parent.Outer.Left, p, parent.Outer.Right, parent.Outer.Bottom);
 			// 親の下側を縮める
 			parent.Outer.Bottom = child.Outer.Top;
-			// 次に分割する区画を決める
-			if (Random.Range (0, 2) == 0) {
-				_divList.Add (parent);
-				_divList.Add (child);
-			} else {
-				_divList.Add (child);
-				_divList.Add (parent);
-			}
 		}
 		// 横方向に分割
 		else {
@@ -147,34 +144,25 @@ public class DungeonGeneratorII : MonoBehaviour {
 			ab = Mathf.Min (ab, MAX_ROOM);
 
 			// 分割点を求める
-			int p;
-			while (true) {
-				p = a + Random.Range (0, ab + 1);
-				if (p != start) break;
-			}
+			int p = a + Random.Range (0, ab + 1);
 
 			// 子区画を設定
 			child.Outer.Set (p, parent.Outer.Top, parent.Outer.Right, parent.Outer.Bottom);
 
 			// 親の右側を縮める
 			parent.Outer.Right = child.Outer.Left;
-
-			// 次に分割する区画を決める
-			if(parent.Outer.Right < start) {
-				parent.start = false;
-				child.start = true;
-			}
-			if (Random.Range (0, 2) == 0) {
-				_divList.Add (parent);
-				_divList.Add (child);
-			} else {
-				_divList.Add (child);
-				_divList.Add (parent);
-			}
+		}
+		// 次に分割する区画を決める
+		if (Random.Range (0, 2) == 0) {
+			_divList.Add (parent);
+			_divList.Add (child);
+		} else {
+			_divList.Add (child);
+			_divList.Add (parent);
 		}
 
 		// 再帰呼び出し
-		SplitDivision (!bVertical, start, goal);
+		SplitDivision (!bVertical);
 		}
 
 	/// <summary>
@@ -190,10 +178,8 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// <summary>
 	/// 部屋を作る
 	/// </summary>
-	private void CreateRoom (int start) {
+	private void CreateRoom () {
 		foreach (DgDivision div in _divList) {
-			Debug.Log (div.Outer.Left + ", " + div.Outer.Right + ", " + div.Outer.Top);
-			if (div.start) Debug.Log ("start");
 			// マージンを埋める
 			int dw = div.Outer.Width - OUTER_MERGIN;
 			int dh = div.Outer.Height - OUTER_MERGIN;
@@ -223,10 +209,6 @@ public class DungeonGeneratorII : MonoBehaviour {
 
 			// 部屋サイズを設定
 			div.Room.Set (left, top, right, bottom);
-
-			if(div.start) {
-				_layer.FillRect (start, height, 1, height - top, SUPERNONE);
-			}
 
 			// 部屋を作る
 			FillDgRect (div.Room);
@@ -303,7 +285,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 
 			// 通路を作れた
 			return true;
-			}
+		}
 		if (divA.Outer.Left == divB.Outer.Right || divA.Outer.Right == divB.Outer.Left) {
 			// 左右でつながっている
 			// 部屋から伸ばす通路の開始位置を決める
@@ -337,9 +319,9 @@ public class DungeonGeneratorII : MonoBehaviour {
 
 			// 通路を作れた
 			return true;
-			}
-		return false;
 		}
+		return false;
+	}
 
 	/// <summary>
 	/// 水平な通路
@@ -414,6 +396,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 						stock = 0;
 					}
 
+					// 左右のつなぎ目を埋める
 					int right = 0;
 					int left = 0;
 					if (floor.Get (i + 1, j) != NONE)
@@ -421,7 +404,6 @@ public class DungeonGeneratorII : MonoBehaviour {
 					if (floor.Get (i - 1, j) != NONE)
 						left = 1;
 					if (right == 0 && left == 0) break;
-
 					obj = (GameObject)Instantiate (block, new Vector2 (i+(right-left)*0.5f, j), new Quaternion ());
 					obj.transform.localScale = new Vector2 (right+left, 1);
 					obj.transform.parent = gameObject.transform;
