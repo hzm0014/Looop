@@ -77,10 +77,22 @@ public class Player : Character {
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		//Debug.Log(life);
 	}
+
+	/// <summary>
+	/// 回復
+	/// 最大値を超えない
+	/// </summary>
+	/// <param name="heal">回復量</param>
+	public virtual void Heal (float heal) {
+		_life = (int)Mathf.Min (_life + heal, _maxLife);
+		Debug.Log ("heal" + _life);
+		UpdateLifeUI ();
+	}
+
 	//死亡関数
 	public void GameOver () {
 		Debug.Log ("dead");
-		}
+	}
 
 	/// <summary>
 	/// ライフのUIを更新
@@ -90,6 +102,5 @@ public class Player : Character {
 		if(text == null)
 			text = lifeUI.GetComponent<Text> ();
 		text.text= _life + " / " + _maxLife;
-
 	}
 }

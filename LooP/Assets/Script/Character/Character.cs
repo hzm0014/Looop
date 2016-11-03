@@ -138,8 +138,33 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		Debug.Log(_life);
 	}
+
+	/// <summary>
+	/// 回復
+	/// 最大値を超えない
+	/// </summary>
+	/// <param name="heal">回復量</param>
+	public virtual void Heal(float heal) {
+		_life = (int)Mathf.Min (_life + heal, _maxLife);
+	}
+
 	//死亡関数
 	public void Dead() {
 		Destroy(gameObject);
+	}
+
+	/// <summary>
+	/// ステータスの上昇
+	/// </summary>
+	/// <param name="target">対象の名前</param>
+	/// <param name="power">上昇値</param>
+	public void StatusUp(string target, float power) {
+		if (target == "atk")
+			_atk += power;
+		else if (target == "life") {
+			this.Heal (power);
+		}
+		else
+			Debug.Log ("not status");
 	}
 }
