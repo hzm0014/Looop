@@ -22,7 +22,7 @@ public class Player : Character {
 	
 	// 移動
 	public void Move(float horizon, bool grounded) {
-		Vector2 pos = transform.position;
+		pos = transform.position;
 		if (grounded)
 		pos.x += horizon * speed.land;
 		else
