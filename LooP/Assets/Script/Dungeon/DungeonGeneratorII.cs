@@ -136,7 +136,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 		int goal = 5;
 		SetBigWall (start, goal);
 		// ボスを戦闘モードに
-		GameObject.Find ("Boss(Clone)").GetComponent<Boss>().ShiftButtleMode(100, 50);
+		GameObject.Find ("Boss(Clone)").GetComponent<Boss>().ShiftButtleMode(100, 50, 100);
 		// ステージ生成
 		stage = (GameObject)Instantiate (BossStage, new Vector2((float)width/2, (float)height/2), new Quaternion ());
 		stage.transform.parent = gameObject.transform;
