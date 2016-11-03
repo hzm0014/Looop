@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Enemy : Character {
 	
-	public Vector2 pos;
 	public float turn;
 	
 	// Use this for initialization
@@ -39,7 +38,7 @@ public class Enemy : Character {
 		if(other.tag == "Player") {
 			GameObject obj = other.transform.gameObject;
 			Player p = obj.GetComponent<Player>();
-			this.force = new Vector2(direction, 1.0f);
+			this.force = new Vector2((p.GetPosition().x - this.pos.x)*0.1f, 0.5f);
 
 			p.Damage(this);
 		}

@@ -14,7 +14,8 @@ public class Boss : Enemy {
 		this.ra = 1;
 		this.life = 100.0f;
 		this.power = 2.0f;
-		this.forceSpeed = 2.0f;
+		this.forceSpeed = 0.5f;
+		this.force = new Vector2(0.5f,0.5f);
 		
 		SetSpeed(0.05f, 0.02f);
 	}
