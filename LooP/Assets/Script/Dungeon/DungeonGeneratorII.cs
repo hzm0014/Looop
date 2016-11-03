@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -42,8 +43,12 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// </summary>
 	public GameObject block, goalObj;
 
+	int _floorNum;
+	public GameObject floorText;
+
 	// Use this for initialization
 	void Start () {
+		_floorNum = 0;
 		GenerateDungeon ();
 	}
 
@@ -51,6 +56,9 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// ダンジョン生成
 	/// </summary>
 	public void GenerateDungeon() {
+		_floorNum++;
+		floorText.GetComponent<Text> ().text = "B" + _floorNum;
+
 		width = (int)Random.Range (20, 50);
 		height = (int)Random.Range (10, 25);
 
