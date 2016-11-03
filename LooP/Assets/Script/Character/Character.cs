@@ -22,15 +22,15 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	protected Vector2 force; //吹き飛ばされる
 	protected float forceSpeed; //吹き飛ばされるスピード
 	protected Vector2 pos;
+	protected Vector2 velocity;
 	
 	//関数宣言部
 	// 初期化
-	void Start () {
-	}
-	
+	void Start () {}
 	// 繰り返しを記入
-	void Update () {
-
+	void Update () {}
+	void FixedUpdate() {
+		velocity = this.GetComponent<Rigidbody2D>().velocity;
 	}
 	
 	//set関数群
@@ -127,7 +127,8 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		this.direction *= -1;
 	}
 	// ノックバック
-	public void KnockBack(Vector2 force, float forceSpeed) {
+	public virtual void KnockBack(Vector2 force, float forceSpeed) {
+		this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
 		GetComponent<Rigidbody2D>().AddForce(force * forceSpeed, ForceMode2D.Impulse);
 	}
 	
@@ -141,7 +142,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		if (_life <= 0) Dead();
 		
 		//GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
-		KnockBack(force, 5.0f);
+		KnockBack(force, forceSpeed);
 		Debug.Log(_life);
 	}
 	// Damage(IDamageGenerator, damage)

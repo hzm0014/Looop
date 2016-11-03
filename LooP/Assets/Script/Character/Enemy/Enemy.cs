@@ -11,6 +11,7 @@ public class Enemy : Character {
 		this.direction = -1;
 		this.turn = 10;
 		this._atk = 1;
+		this.forceSpeed = 5.0f;
 		
 		SetSpeed(0.3f, 0.3f);
 	}
