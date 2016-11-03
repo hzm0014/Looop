@@ -7,6 +7,7 @@ using System.Collections;
 public class Item : MonoBehaviour {
 	public string target;
 	public float power;
+
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.tag == "Player") {
 			if (target == "life")
