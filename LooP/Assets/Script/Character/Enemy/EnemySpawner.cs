@@ -21,6 +21,11 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 	public GameObject _spawnObj;
 
 	/// <summary>
+	/// スポーンするかのフラグ
+	/// </summary>
+	public bool isSpawn;
+
+	/// <summary>
 	/// 敵の生成を開始する
 	/// </summary>
 	/// <param name="floor">フロアの構造情報</param>
@@ -28,6 +33,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 	/// <param name="interval">敵出現周期(秒）</param>
 	private void _StartSpawn (Layer2D floor, int initNum, float interval) {
 		_floor = floor;
+		isSpawn = true;
 		for (int i = 0; i < initNum; i++)
 			Spawn ();
 		StartCoroutine ("SpawnCycle", interval);
@@ -41,7 +47,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 	/// </summary>
 	/// <returns>The cycle.</returns>
 	private IEnumerator SpawnCycle (float interval) {
-		while (true) {
+		while (isSpawn) {
 			Spawn ();
 			yield return new WaitForSeconds (interval);
 		}
