@@ -16,10 +16,12 @@ public class Goal : MonoBehaviour {
 	/// <param name="col">Col.</param>
 	void OnTriggerEnter2D (Collider2D col) {
 		if (col.tag == "Player") {
+			// ダンジョンを全て削除
 			Transform parent_trans = dungeon.transform;
 			for (int i = parent_trans.childCount - 1; i >= 0; --i) {
 				Destroy (parent_trans.GetChild (i).gameObject);
 			}
+			EnemySpawner.Instance.isSpawn = false;
 			DungeonGeneratorII d = dungeon.GetComponent<DungeonGeneratorII> ();
 			d.GenerateDungeon ();
 		}
