@@ -39,6 +39,8 @@ public class Enemy : Character {
 		if(other.tag == "Player") {
 			GameObject obj = other.transform.gameObject;
 			Player p = obj.GetComponent<Player>();
+			this.force = new Vector2(direction, 1.0f);
+
 			p.Damage(this);
 		}
 	}
