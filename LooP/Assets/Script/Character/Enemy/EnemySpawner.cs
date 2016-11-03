@@ -14,7 +14,7 @@ public class EnemySpawner : Spawner {
 	IEnumerator Spawn() {
 		while(true) {
 			while(isSpawn) {
-				SetPosition(Random.Range(-20.0f, 20.0f), 50.0f);
+				SetPosition(Random.Range(-5.0f, 5.0f), 5.0f);
 				Instantiate(spawnObject, vec, Quaternion.identity);
 				SetInterval();
 				//interval分次の処理を待つ

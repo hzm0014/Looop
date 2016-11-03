@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Character : MonoBehaviour , IDamageGenerator {
+public class Character : MonoBehaviour ,IDamageGenerator {
 	//構造体宣言部
 	protected struct Speed {
 		public float land, sky;
@@ -89,20 +89,15 @@ public class Character : MonoBehaviour , IDamageGenerator {
 	
 	//行動関係群
 	// 移動
-	public virtual void Move() {
-	}
+	public virtual void Move() {}
 	//ジャンプ
-	public virtual void Jump() {
-	}
+	public virtual void Jump() {}
 	// アクション
-	public virtual void Action() {
-	}
+	public virtual void Action() {}
 	// 通常攻撃
-	public virtual void Attack() {
-	}
+	public virtual void Attack() {}
 	// 特技
-	public virtual void Specialty() {
-	}
+	public virtual void Specialty() {}
 	//向き反転
 	public void Reverse() {
 		transform.Rotate(new Vector2(0f,180f));
@@ -121,6 +116,7 @@ public class Character : MonoBehaviour , IDamageGenerator {
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		Debug.Log(life);
 	}
+	//死亡関数
 	public void Dead() {
 		Destroy(gameObject);
 	}
