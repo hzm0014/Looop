@@ -9,6 +9,10 @@ public class Boss : Enemy {
 
 	public bool battoleMode;
 	public float hitCount;
+
+	public GameObject child;
+	public int count;
+	public int bornCycle;
 	
 	// Use this for initialization
 	void Start () {
@@ -35,6 +39,13 @@ public class Boss : Enemy {
 		if(velocity.y > 1.0f || velocity.y < -1.0f) this.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, 0.0f);
 		
 		Move();
+		if (battoleMode) {
+			count++;
+			if (count > bornCycle) {
+				Instantiate (child, transform.localPosition, new Quaternion());
+				count = 0;
+			}
+		}
 	}
 	
 	// 移動アルゴリズム
@@ -87,8 +98,10 @@ public class Boss : Enemy {
 	/// </summary>
 	/// <param name="max_life">Max life.</param>
 	/// <param name="min_life">Minimum life.</param>
-	public void ShiftButtleMode(float max_life, float min_life) {
+	public void ShiftButtleMode(float max_life, float min_life, int born) {
 		_life = Mathf.Max (max_life - hitCount, min_life);
 		battoleMode = true;
+		count = 0;
+		bornCycle = born;
 	}
 }
