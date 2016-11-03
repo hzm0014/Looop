@@ -36,7 +36,7 @@ public class DungeonGenrator : MonoBehaviour {
 	const int MAX_ROOM = 8;
 
 
-	const int NONE = 0, WALL = 1;
+	const int SUPERNONE = -1, NONE = 0, WALL = 1;
 	// Use this for initialization
 	void Start () {
 		GenerateDungeon (30, 30);

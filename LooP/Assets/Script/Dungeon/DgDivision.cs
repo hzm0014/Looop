@@ -94,6 +94,11 @@ public class DgDivision
 	/// </summary>
 	public DgRect Road;
 
+	/// <summary>
+	/// 特殊なエリアを含む区画であるか
+	/// </summary>
+	public bool start, goal;
+
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -102,6 +107,7 @@ public class DgDivision
         Outer = new DgRect();
         Room = new DgRect();
 		Road = null;
+		start = goal = false;
     }
 	/// <summary>
 	/// 通路が存在するかどうか

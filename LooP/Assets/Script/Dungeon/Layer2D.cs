@@ -70,7 +70,8 @@ public class Layer2D {
             // 領域外を指定した
             return;
         }
-
+		if (_values[y * Width + x] == -1)
+			return;
         _values[y * Width + x] = v;
     }
 
