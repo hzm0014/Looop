@@ -90,6 +90,8 @@ public class DungeonGeneratorII : MonoBehaviour {
 		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize*2/3);
 		// spawnerの設定
 		EnemySpawner.StartSpawn (_floor, 3, 5);
+		// アイテムを設置
+		ItemGenerator.RandomDeploy (_floor, 10);
 	}
 
 	/// <summary>
