@@ -10,7 +10,7 @@ public class Enemy : Character {
 		pos = transform.position;
 		this.direction = -1;
 		this.turn = 10;
-		this.power = 1;
+		this._atk = 1;
 		
 		SetSpeed(0.3f, 0.3f);
 	}
