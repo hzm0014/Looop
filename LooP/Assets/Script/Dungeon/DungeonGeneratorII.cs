@@ -42,8 +42,8 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	/// <summary>
 	/// ボス戦の周期
 	/// </summary>
-	const int EntryCycle = 3;
-	const int BattleCycle = 10;
+	const int EntryCycle = 1;
+	const int BattleCycle = 3;
 	public GameObject Boss;
 
 	/// <summary>
@@ -136,7 +136,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 		int goal = 5;
 		SetBigWall (start, goal);
 		// ボスを戦闘モードに
-		GameObject.Find ("Boss").GetComponent<Boss>().ShiftButtleMode(100, 50);
+		GameObject.Find ("Boss(Clone)").GetComponent<Boss>().ShiftButtleMode(100, 50);
 		// ステージ生成
 		stage = (GameObject)Instantiate (BossStage, new Vector2((float)width/2, (float)height/2), new Quaternion ());
 		stage.transform.parent = gameObject.transform;
