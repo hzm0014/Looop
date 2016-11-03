@@ -52,6 +52,23 @@ public class Player : Character {
 
 	// 特技；射撃
 	public override void Specialty () {
+<<<<<<< HEAD
+		GameObject obj = (GameObject)Instantiate (Resources.Load ("Prefavs/Bullet/Kunai"));
+		obj.GetComponent<Kunai> ().SetBullet (transform.position, aim.transform.localEulerAngles);
+		}
+	//ダメージ
+	public override void Damage (IDamageGenerator damageGenerator) {
+		damage = damageGenerator.GetPower ();
+		force = damageGenerator.GetForce ();
+		forceSpeed = damageGenerator.GetForceSpeed ();
+
+		_life = Mathf.Max (_life - damage, 0);
+		if (_life <= 0) GameOver ();
+
+		GetComponent<Rigidbody2D> ().AddForce (force * 5.0f, ForceMode2D.Impulse);
+
+		Debug.Log(_life);
+=======
 		GameObject obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
 		Kunai kunai = obj.GetComponent<Kunai>();
 		Debug.Log(kunai.transform.rotation);
@@ -68,12 +85,15 @@ public class Player : Character {
 		force = damageGenerator.GetForce();
 		forceSpeed = damageGenerator.GetForceSpeed();
 		
-		life = Mathf.Max (life - damage, 0);
-		if (life <= 0) GameOver ();
-		
+		_life = Mathf.Max (_life - damage, 0);
+		if (_life <= 0) GameOver ();
+				
+		UpdateLifeUI ();
+
 		// ノックバック処理
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		//Debug.Log(life);
+>>>>>>> master
 	}
 	//死亡関数
 	public void GameOver () {
