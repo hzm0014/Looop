@@ -30,12 +30,17 @@ public class Boss : Enemy {
 	// Update is called once per frame
 	void Update () {
 		pos = transform.position;
+		
+		if(velocity.x > 1.0f || velocity.x < -1.0f) this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, velocity.y);
+		if(velocity.y > 1.0f || velocity.y < -1.0f) this.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, 0.0f);
+		
 		Move();
 	}
 	
 	// 移動アルゴリズム
 	public override void Move() {
 		Vector2 playerPosition = player.GetPosition();
+		
 		if(playerPosition.x > pos.x && direction == -1) this.Reverse();
 		else if(playerPosition.x < pos.x && direction == 1) this.Reverse();
 		
@@ -49,7 +54,11 @@ public class Boss : Enemy {
 		
 		transform.position = pos;
 	}
-
+	
+	public override void KnockBack(Vector2 force, float forceSpeed) {
+		this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+		GetComponent<Rigidbody2D>().AddForce(force * forceSpeed * 0.1f, ForceMode2D.Impulse);
+	}
 	//ダメージ
 	public override void Damage (IDamageGenerator damageGenerator) {
 		damage = damageGenerator.GetPower ();

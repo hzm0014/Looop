@@ -23,7 +23,7 @@ public class Kunai : MonoBehaviour ,IDamageGenerator{
 	public void SetBullet(Vector2 pos, Vector3 v) {
 		transform.position = pos;
 		transform.rotation = Quaternion.Euler(0.0f, 0.0f, v.z);
-		force = new Vector2(Mathf.Cos (Mathf.Deg2Rad * v.z), Mathf.Sin (Mathf.Deg2Rad * v.z));
+		force = new Vector2(Mathf.Cos(Mathf.Deg2Rad * v.z)* 0.1f, Mathf.Sin(Mathf.Deg2Rad * v.z)*0.1f);
 		forceSpeed = 1.0f;
 		
 		vSpeed.x = Mathf.Cos (Mathf.Deg2Rad * v.z) * speed;
