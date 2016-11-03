@@ -22,15 +22,15 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	protected Vector2 force; //吹き飛ばされる
 	protected float forceSpeed; //吹き飛ばされるスピード
 	protected Vector2 pos;
+	protected Vector2 velocity;
 	
 	//関数宣言部
 	// 初期化
-	void Start () {
-	}
-	
+	void Start () {}
 	// 繰り返しを記入
-	void Update () {
-
+	void Update () {}
+	void FixedUpdate() {
+		velocity = this.GetComponent<Rigidbody2D>().velocity;
 	}
 	
 	//set関数群
@@ -126,7 +126,13 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		transform.Rotate(new Vector2(0f,180f));
 		this.direction *= -1;
 	}
-	//ダメージ
+	// ノックバック
+	public virtual void KnockBack(Vector2 force, float forceSpeed) {
+		this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+		GetComponent<Rigidbody2D>().AddForce(force * forceSpeed, ForceMode2D.Impulse);
+	}
+	
+	// ダメージ
 	public virtual void Damage(IDamageGenerator damageGenerator){
 		damage = damageGenerator.GetPower();
 		force = damageGenerator.GetForce();
@@ -135,7 +141,20 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		_life = Mathf.Max (_life - damage, 0);
 		if (_life <= 0) Dead();
 		
-		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		//GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		KnockBack(force, forceSpeed);
+		Debug.Log(_life);
+	}
+	// Damage(IDamageGenerator, damage)
+	public virtual void Damage(IDamageGenerator damageGenerator, float damage){
+		force = damageGenerator.GetForce();
+		forceSpeed = damageGenerator.GetForceSpeed();
+		
+		_life = Mathf.Max (_life - damage, 0);
+		if (_life <= 0) Dead();
+		
+		//GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		KnockBack(force, forceSpeed);
 		Debug.Log(_life);
 	}
 
