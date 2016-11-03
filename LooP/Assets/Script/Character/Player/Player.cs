@@ -66,7 +66,7 @@ public class Player : Character {
 		GameObject obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
 		Kunai kunai = obj.GetComponent<Kunai>();
 		Debug.Log(kunai.transform.rotation);
-		kunai.SetBullet(transform.position, aim.transform.localEulerAngles);
+		kunai.SetBullet(transform.position, aim.transform.localEulerAngles, GetPower());
 		// 吹っ飛び
 		Vector3 aimVec = aim.transform.localEulerAngles;
 		Vector2 kunaiVec = new Vector2( -1*Mathf.Cos (Mathf.Deg2Rad * aimVec.z) *5.0f ,  -1*Mathf.Sin (Mathf.Deg2Rad * aimVec.z)*10.0f );
