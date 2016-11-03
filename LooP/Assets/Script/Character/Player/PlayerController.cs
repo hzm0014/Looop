@@ -58,11 +58,5 @@ public class PlayerController : MonoBehaviour {
 		} else if (!(Input.GetAxis ("Atack") >= 1)){
 			isAtkButtom = true;
 		}
-
-		//重力
-		if (isWall != 0)
-			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (isWall * 100, 0.0f));
-		else
-			GetComponent<Rigidbody2D> ().AddForce (Vector2.down * 100);
 	}
 }
