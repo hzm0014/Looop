@@ -13,7 +13,8 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	
 	//変数宣言部
 	protected Speed speed; //素早さ
-	protected float life; //命
+	public float _maxLife { get; set;}	// 最大命
+	public float _life { get; set;} 		// 命
 	public float _atk { get; set;} //攻撃力
 	protected float defense; //守備力
 	protected float direction; //方向
@@ -48,7 +49,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	}
 	// [S4] ライフの設定
 	public void SetLife(float life) {
-		this.life = life;
+		this._life = life;
 	}
 	// [S5] 攻撃力の設定
 	public void SetPower(float power) {
@@ -82,7 +83,7 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	}
 	// [G3] ライフ
 	public float GetLife() {
-		return life;
+		return _life;
 	}
 	// [G4] 攻撃力
 	public float GetPower() {
@@ -131,11 +132,11 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		force = damageGenerator.GetForce();
 		forceSpeed = damageGenerator.GetForceSpeed();
 		
-		life = Mathf.Max (life - damage, 0);
-		if (life <= 0) Dead();
+		_life = Mathf.Max (_life - damage, 0);
+		if (_life <= 0) Dead();
 		
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
-		Debug.Log(life);
+		Debug.Log(_life);
 	}
 	//死亡関数
 	public void Dead() {

@@ -12,7 +12,7 @@ public class Boss : Enemy {
 		pos = transform.position;
 		this.direction = -1;
 		this.ra = 1;
-		this.life = 10000.0f;
+		this._life = 10000.0f;
 		this._atk = 2.0f;
 		this.forceSpeed = 0.5f;
 		this.force = new Vector2(0.5f,0.5f);

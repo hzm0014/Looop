@@ -8,7 +8,7 @@ public class Butachan : Enemy {
 		pos = transform.position;
 		this.direction = -1;
 		this.turn = 10;
-		this.life = 10.0f;
+		this._life = 10.0f;
 		this._atk = 1.0f;
 		this.forceSpeed = 0.1f;
 		SetSpeed(0.1f, 0.3f);
