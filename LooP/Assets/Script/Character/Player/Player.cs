@@ -3,16 +3,19 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Player : Character {
-
+	
 	public GameObject bullet;
 	public GameObject aim;
-
+	
 	public GameObject lifeUI;
-
+	
 	// 画像系
 	SpriteRenderer MainSpriteRenderer;
 	public Sprite left, right;
-
+	
+	// 点滅用
+	private Renderer renderer;
+	
 	// Use this for initialization
 	void Start () {
 		speed.land = 0.3f;
@@ -23,33 +26,35 @@ public class Player : Character {
 		MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		// UIの更新
 		UpdateLifeUI ();
+		// 無敵時間の点滅用
+		renderer = GetComponent<Renderer>();
 	}
-
+	
 	// 移動
 	public void Move (float horizon, bool grounded) {
 		pos = transform.position;
 		if (grounded)
-			pos.x += horizon * speed.land;
+		pos.x += horizon * speed.land;
 		else
-			pos.x += horizon * speed.sky;
+		pos.x += horizon * speed.sky;
 		// 向きを設定
 		if (horizon > 0) {
 			direction = 1;
 			MainSpriteRenderer.sprite = right;
-			} else if (horizon < 0) {
+		} else if (horizon < 0) {
 			direction = -1;
 			MainSpriteRenderer.sprite = left;
-			}
-
-		transform.position = pos;
 		}
-
+		
+		transform.position = pos;
+	}
+	
 	// ジャンプ
 	public void Jump (bool grounded) {
 		if (!grounded) return;
 		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1500);
-		}
-
+	}
+	
 	// 特技；射撃
 	public override void Specialty () {
 		GameObject obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
@@ -69,27 +74,55 @@ public class Player : Character {
 		forceSpeed = damageGenerator.GetForceSpeed();
 		
 		_life = Mathf.Max (_life - damage, 0);
-		if (_life <= 0) GameOver ();
-				
-		UpdateLifeUI ();
-
+		
+		// ライフのUIをUpdate
+		UpdateLifeUI();
+		
+		// ライフが0でゲームオーバーへ
+		if (_life <= 0) GameOver();
+		
+		// 無敵時間のコルーチンを開始
+		StartCoroutine("Invincible");
+		
 		// ノックバック処理
 		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
 		//Debug.Log(life);
 	}
-	//死亡関数
+	// 死亡関数
 	public void GameOver () {
 		Debug.Log ("dead");
+	}
+	
+	// 無敵時間コルーチン内部
+	IEnumerator Invincible() {
+		
+		//レイヤーをPlayerDamageに変更
+		gameObject.layer = LayerMask.NameToLayer("PlayerDamage");
+		//while文を10回ループ
+		int count = 10;
+		while(count > 0) {
+			//透明にする
+			renderer.material.color = new Color (1,1,1,0);
+			//0.05秒待つ
+			yield return new WaitForSeconds(0.05f);
+			//元に戻す
+			renderer.material.color = new Color (1,1,1,1);
+			//0.05秒待つ
+			yield return new WaitForSeconds(0.05f);
+			count--;
 		}
-
+		//レイヤーをPlayerに戻す
+		gameObject.layer = LayerMask.NameToLayer("Player");
+	}
+	
 	/// <summary>
 	/// ライフのUIを更新
 	/// </summary>
 	static Text text = null;
 	private void UpdateLifeUI() {
 		if(text == null)
-			text = lifeUI.GetComponent<Text> ();
+		text = lifeUI.GetComponent<Text> ();
 		text.text= _life + " / " + _maxLife;
-
+		
 	}
 }
