@@ -51,7 +51,7 @@ public class DungeonGeneratorII : MonoBehaviour {
 	/// ダンジョン生成
 	/// </summary>
 	public void GenerateDungeon() {
-		width = (int)Random.Range (20, 70);
+		width = (int)Random.Range (20, 50);
 		height = (int)Random.Range (10, 25);
 
 		_floor = new Layer2D (width, height);
