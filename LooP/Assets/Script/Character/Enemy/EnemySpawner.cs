@@ -7,9 +7,9 @@ public class EnemySpawner : Spawner {
 	Vector2 startPos;
 	Vector2 size;
 	
-	public EnemySpawner(float x,float y, float width, float height, int Interval) {
+	public void Awake(float x,float y, float width, float height, float intervalS, float intervalE) {
 		SetRange(x,y,width,height);
-		SetInterval(Interval);
+		SetIntervalScale(intervalS, intervalE);
 	}
 	
 	// Use this for initialization
@@ -22,14 +22,17 @@ public class EnemySpawner : Spawner {
 		while(true) {
 			while(isSpawn) {
 				SetPosition(Random.Range(startPos.x, startPos.x+size.x), Random.Range(startPos.y, startPos.y+size.y));
-				Instantiate(spawnObject, vec, Quaternion.identity);
+				GameObject obj;
+				obj = (GameObject)Instantiate(spawnObject, vec, Quaternion.identity);
+				obj.transform.SetParent (transform);
+				SetInterval( DecideInterval() );
 				//interval分次の処理を待つ
-				yield return new WaitForSeconds(interval);
+				yield return new WaitForSeconds( interval );
 			}
 		}
 	}
 	
-	void SetInterval(int i) {
+	void SetInterval(float i) {
 		//出現頻度の調整
 		this.interval = i;
 	}

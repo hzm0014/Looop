@@ -36,7 +36,8 @@ public class DungeonGeneratorII : MonoBehaviour {
 	int width, height;
 	const int wallSize = 30;
 
-	public GameObject block, goalObj;
+public GameObject block, goalObj;
+public GameObject spawner;
 
 	// Use this for initialization
 	void Start () {
@@ -74,7 +75,6 @@ public class DungeonGeneratorII : MonoBehaviour {
 		int start = Random.Range (startRoom.Room.Left + 1, startRoom.Room.Right);
 		DgDivision goalRoom = _divList[Random.Range (0, _divList.Count - 1)];
 		int goal = Random.Range (goalRoom.Room.Left + 1, goalRoom.Room.Right);
-
 
 		// スタートとゴールの穴を開ける
 		BitFloor (start, goal);
@@ -212,6 +212,13 @@ public class DungeonGeneratorII : MonoBehaviour {
 
 			// 部屋を作る
 			FillDgRect (div.Room);
+			
+			// Spawnerを生成
+			GameObject obj;
+			obj = (GameObject)Instantiate(spawner, new Vector2(rx, ry), new Quaternion ());
+			obj.transform.SetParent (transform);
+			EnemySpawner es = obj.GetComponent<EnemySpawner>();
+			es.Awake(rx, ry, sw, sh, 10.0f, 100.f);
 			}
 		}
 

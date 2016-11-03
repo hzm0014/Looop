@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour {
 	public GameObject spawnObject;
 	//発生感覚
 	public float interval;
+	public Vector2 intervalScale;
 	//スポーンするかどうか
 	public bool isSpawn = true;
 	
@@ -36,6 +37,10 @@ public class Spawner : MonoBehaviour {
 	void SetIsAvailable(bool IA) {
 		isSpawn = IA;
 	}
+	// [S4] IntervalScaleの設定
+	public void SetIntervalScale(float start, float end) {
+		intervalScale = new Vector2(start, end);
+	}
 	// [Initialize] 初期化関数 or まとめて変更関数
 	void init(float interval, GameObject go, bool IA) {
 		SetInterval (interval);
@@ -49,4 +54,8 @@ public class Spawner : MonoBehaviour {
 	GameObject GetSpawnObject() { return spawnObject; }
 	// [G3] popするかを返す
 	bool IsAvailable() { return isSpawn; }
+	
+	public float DecideInterval() {
+		return (float)Random.Range(intervalScale.x, intervalScale.y);
+	}
 }
