@@ -126,7 +126,12 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		transform.Rotate(new Vector2(0f,180f));
 		this.direction *= -1;
 	}
-	//ダメージ
+	// ノックバック
+	public void KnockBack(Vector2 force, float forceSpeed) {
+		GetComponent<Rigidbody2D>().AddForce(force * forceSpeed, ForceMode2D.Impulse);
+	}
+	
+	// ダメージ
 	public virtual void Damage(IDamageGenerator damageGenerator){
 		damage = damageGenerator.GetPower();
 		force = damageGenerator.GetForce();
@@ -135,7 +140,20 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 		_life = Mathf.Max (_life - damage, 0);
 		if (_life <= 0) Dead();
 		
-		GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		//GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		KnockBack(force, 5.0f);
+		Debug.Log(_life);
+	}
+	// Damage(IDamageGenerator, damage)
+	public virtual void Damage(IDamageGenerator damageGenerator, float damage){
+		force = damageGenerator.GetForce();
+		forceSpeed = damageGenerator.GetForceSpeed();
+		
+		_life = Mathf.Max (_life - damage, 0);
+		if (_life <= 0) Dead();
+		
+		//GetComponent<Rigidbody2D>().AddForce(force * 5.0f, ForceMode2D.Impulse);
+		KnockBack(force, forceSpeed);
 		Debug.Log(_life);
 	}
 
