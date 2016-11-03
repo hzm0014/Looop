@@ -5,7 +5,9 @@ using System.Collections.Generic;
 /// <summary>
 /// ダンジョンを生成する
 /// </summary>
-public class DungeonGeneratorII : MonoBehaviour {
+public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
+	protected DungeonGeneratorII(){}
+
 	/// <summary>
 	/// ダンジョン情報
 	/// </summary>
