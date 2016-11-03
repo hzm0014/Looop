@@ -21,7 +21,7 @@ public class EnemySpawner : Spawner {
 	IEnumerator Spawn() {
 		while(true) {
 			while(isSpawn) {
-				SetPosition(Random.Range(startPos.x, startPos.y), Random.Range(startPos.x+size.x, startPos.y+size.y));
+				SetPosition(Random.Range(startPos.x, startPos.x+size.x), Random.Range(startPos.y, startPos.y+size.y));
 				Instantiate(spawnObject, vec, Quaternion.identity);
 				//interval分次の処理を待つ
 				yield return new WaitForSeconds(interval);
