@@ -5,17 +5,7 @@ public class ItemGenerator : Singleton<ItemGenerator> {
 	protected ItemGenerator(){}
 
 	// アイテム
-	public GameObject item;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	public GameObject[] items;
 
 	/// <summary>
 	/// マップにアイテムを設置する
@@ -27,7 +17,8 @@ public class ItemGenerator : Singleton<ItemGenerator> {
 			int x = Random.Range (1, floor.Width);
 			int y = Random.Range (1, floor.Height);
 			if (floor.Get (x, y) == 0) {
-				GameObject obj = (GameObject)Instantiate (item, new Vector2 (x, y), Quaternion.identity);
+				int index = Random.Range (0, items.Length);
+				GameObject obj = (GameObject)Instantiate (items[index], new Vector2 (x, y), Quaternion.identity);
 				obj.transform.SetParent (GameObject.Find ("Dungeon").transform);
 				i++;
 			}
