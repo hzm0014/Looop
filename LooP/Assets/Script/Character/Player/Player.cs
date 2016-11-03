@@ -114,7 +114,6 @@ public class Player : Character {
 	/// ステータスの上昇
 	/// </summary>
 	public override void StatusUp (string target, float power) {
-		Debug.Log ("aaaa");
 		if (target == "atk")
 			_atk += power;
 		else if (target == "life")

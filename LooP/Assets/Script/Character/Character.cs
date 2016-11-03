@@ -156,7 +156,6 @@ public class Character : MonoBehaviour ,IDamageGenerator {
 	/// ステータスの上昇
 	/// </summary>
 	public virtual void StatusUp(string target, float power) {
-		Debug.Log ("bbbb");
 		if (target == "atk")
 			_atk += power;
 		else if (target == "life")
