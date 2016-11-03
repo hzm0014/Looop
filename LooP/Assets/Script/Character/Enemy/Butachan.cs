@@ -9,8 +9,17 @@ public class Butachan : Enemy {
 		this.direction = -1;
 		this.turn = 10;
 		this.life = 10.0f;
+		this.power = 1.0f;
 		
 		SetSpeed(0.1f, 0.3f);
+	}
+	
+	public void Jump (bool grounded) {
+		if (!grounded) return;
+		Vector2 pos = transform.position;
+		pos.y += 1.5f;
+		transform.position = pos;
+		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1500);
 	}
 	
 	// Update is called once per frame
