@@ -45,7 +45,7 @@ public class Boss : Enemy {
 		}
 	}
 	
-	// 移動アルゴリズム
+	// （通常時）移動アルゴリズム
 	public override void Move() {
 		Vector2 playerPosition = player.GetPosition();
 		
@@ -70,6 +70,7 @@ public class Boss : Enemy {
 		transform.position = pos;
 	}
 	
+	// Bossのノックバック調整用
 	public override void KnockBack(Vector2 force, float forceSpeed) {
 		this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
 		GetComponent<Rigidbody2D>().AddForce(force * forceSpeed * 0.1f, ForceMode2D.Impulse);
