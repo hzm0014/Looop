@@ -48,8 +48,8 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 	/// <returns>The cycle.</returns>
 	private IEnumerator SpawnCycle (float interval) {
 		while (isSpawn) {
-			Spawn ();
 			yield return new WaitForSeconds (interval);
+			Spawn ();
 		}
 	}
 
