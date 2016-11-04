@@ -25,21 +25,30 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 	/// </summary>
 	public bool isSpawn;
 
+	int _floorNum;
+
+
+	float butaPow = 100.0f;
+	float delatabutapow = 10.0f;
+	float bairitu = 1.1f;
+
 	/// <summary>
 	/// 敵の生成を開始する
 	/// </summary>
 	/// <param name="floor">フロアの構造情報</param>
-	/// <param name="initNum">初期の敵数</param>
-	/// <param name="interval">敵出現周期(秒）</param>
-	private void _StartSpawn (Layer2D floor, int initNum, float interval) {
+	private void _StartSpawn (Layer2D floor, int floorNum) {
 		_floor = floor;
+		_floorNum = floorNum;
 		isSpawn = true;
+		int initNum = Mathf.Min (4 + (int)(floorNum*0.1f), 10);
 		for (int i = 0; i < initNum; i++)
 			Spawn ();
+		float interval = Mathf.Max (6 - floorNum * 0.1f, 2);
 		StartCoroutine ("SpawnCycle", interval);
+		butaPow = (butaPow * bairitu) + delatabutapow;
 	}
-	public static void StartSpawn(Layer2D floor, int initNum, float interval) {
-		Instance._StartSpawn (floor, initNum, interval);
+	public static void StartSpawn(Layer2D floor, int floorNum) {
+		Instance._StartSpawn (floor, floorNum);
 	}
 
 	/// <summary>
@@ -63,6 +72,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 			if (_floor.Get (x, y) == 0) {
 				GameObject obj = (GameObject)Instantiate (_spawnObj, new Vector2 (x, y), Quaternion.identity);
 				obj.transform.SetParent (GameObject.Find ("Dungeon").transform);
+				obj.GetComponent<Butachan> ()._maxLife = butaPow;
 				break;
 			}
 		}

@@ -52,7 +52,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	/// </summary>
 	public GameObject block, goalObj;
 
-	int _floorNum;
+	public int _floorNum;
 	public GameObject floorText;
 
 	// Use this for initialization
@@ -115,7 +115,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 		// 主人公を配置
 		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize * 2 / 3);
 		// spawnerの設定
-		EnemySpawner.StartSpawn (_floor, 5, 6);
+		EnemySpawner.StartSpawn (_floor, _floorNum);
 		// アイテムを設置
 		ItemGenerator.RandomDeploy (_floor, 5);
 	}

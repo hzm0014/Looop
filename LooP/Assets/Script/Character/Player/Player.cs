@@ -25,7 +25,7 @@ public class Player : Character {
 		hit = false;
 		speed.land = 0.3f;
 		speed.sky = 0.2f;
-		_life = _maxLife = 10;
+		_life = _maxLife = 5;
 		_atk = 20;
 		forceSpeed = 5.0f;
 		// スプライト
@@ -107,10 +107,12 @@ public class Player : Character {
 		// ライフのUIをUpdate
 		UpdateLifeUI ();
 	}
-	
+
 	// 死亡関数
+	public MaxRecord record;
 	public void GameOver () {
-		Debug.Log ("dead");
+		//記録更新
+		record.SetRecord (DungeonGeneratorII.Instance._floorNum);
 		GetComponent<Rigidbody2D> ().AddForce (new Vector2 (100.0f, 100.0f), ForceMode2D.Impulse);
 		GetComponent<BoxCollider2D> ().enabled = false;
 		GetComponent<CircleCollider2D> ().enabled = false;
