@@ -177,7 +177,7 @@ public class Player : Character {
 				}
 				else {
 					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 10.0f);
-					e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y*1.5f);
+					e.transform.localPosition = new Vector2(e.GetPosition().x + Random.Range(-1.5f,1.5f), e.GetPosition().y - bc.size.y*1.5f);
 					//e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 10.0f);
 				}
 			}
