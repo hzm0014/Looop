@@ -35,9 +35,6 @@ public class Boss : Enemy {
 	void Update () {
 		pos = transform.position;
 		
-		if(velocity.x > 1.0f || velocity.x < -1.0f) this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, velocity.y);
-		if(velocity.y > 1.0f || velocity.y < -1.0f) this.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, 0.0f);
-		
 		Move();
 		if (battoleMode) {
 			count++;
@@ -62,6 +59,13 @@ public class Boss : Enemy {
 		pos = transform.position;
 		pos.x += direction * speed.sky;
 		pos.y += ra * speed.sky;
+		
+		if(velocity.x > 1.0f || velocity.x < -1.0f) {
+			this.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, velocity.y);
+		}
+		if(velocity.y > 1.0f || velocity.y < -1.0f) {
+			this.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, 0.0f);
+		}
 		
 		transform.position = pos;
 	}

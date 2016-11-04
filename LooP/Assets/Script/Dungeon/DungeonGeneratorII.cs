@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -115,9 +115,9 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 		// 主人公を配置
 		GameObject.Find ("Player").transform.position = new Vector2 (start, wallSize * 2 / 3);
 		// spawnerの設定
-		EnemySpawner.StartSpawn (_floor, 10, 1);
+		EnemySpawner.StartSpawn (_floor, 5, 6);
 		// アイテムを設置
-		ItemGenerator.RandomDeploy (_floor, 10);
+		ItemGenerator.RandomDeploy (_floor, 5);
 	}
 
 	/// <summary>

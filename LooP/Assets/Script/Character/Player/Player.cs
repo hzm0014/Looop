@@ -26,7 +26,7 @@ public class Player : Character {
 		speed.land = 0.3f;
 		speed.sky = 0.2f;
 		_life = _maxLife = 10;
-		_atk = 100;
+		_atk = 20;
 		forceSpeed = 5.0f;
 		// スプライト
 		MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
@@ -160,6 +160,7 @@ public class Player : Character {
 		
 	}
 	
+	// 衝突判定
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag == "Enemy") {
 			GameObject obj = other.transform.gameObject;
@@ -170,15 +171,14 @@ public class Player : Character {
 			float margin = this.GetComponent<BoxCollider2D>().size.y/2+bc.size.y/2;
 			if( gap >= margin ) {
 				// LayerNo.11 == "Ghost"のため
-				Debug.Log(obj.layer);
 				if(obj.layer != 11) {
 					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 20.0f);
 					e.Damage(this, e.GetLife());
 				}
 				else {
 					this.KnockBack(new Vector2(0.0f,  pos.y - e.GetPosition().y), 10.0f);
-					e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y);
-					//e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 1.0f);
+					e.transform.localPosition = new Vector2(e.GetPosition().x, e.GetPosition().y - bc.size.y*1.5f);
+					//e.KnockBack(new Vector2(0.0f, e.GetPosition().y - pos.y), 10.0f);
 				}
 			}
 			else {
