@@ -70,6 +70,9 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 			int x = Random.Range (1, _floor.Width);
 			int y = Random.Range (1, _floor.Height);
 			if (_floor.Get (x, y) == 0) {
+				while(_floor.Get (x, y - 1) == 0) {
+					y--;
+				}
 				GameObject obj = (GameObject)Instantiate (_spawnObj, new Vector2 (x, y), Quaternion.identity);
 				obj.transform.SetParent (GameObject.Find ("Dungeon").transform);
 				obj.GetComponent<Butachan> ()._maxLife = butaPow;
