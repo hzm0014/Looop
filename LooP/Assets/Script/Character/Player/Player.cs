@@ -14,6 +14,10 @@ public class Player : Character {
 	// 画像系
 	SpriteRenderer MainSpriteRenderer;
 	public Sprite left, right;
+
+	// 空中ダッシュ系
+	public float decDash { set; get;}
+	float deltaDash;
 	
 	// 点滅用
 	private Renderer renderer;
@@ -28,6 +32,9 @@ public class Player : Character {
 		_life = _maxLife = 5;
 		_atk = 20;
 		forceSpeed = 5.0f;
+		// ダッシュ系
+		decDash = 0;
+		deltaDash = 5.0f;
 		// スプライト
 		MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
 		// UIの更新
@@ -58,7 +65,7 @@ public class Player : Character {
 	// ジャンプ
 	public void Jump (bool grounded) {
 		if (!grounded) return;
-		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1500);
+		this.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 1000);
 	}
 	
 	// 特技；射撃
@@ -68,10 +75,14 @@ public class Player : Character {
 		Debug.Log(kunai.transform.rotation);
 		kunai.SetBullet(transform.position, aim.transform.localEulerAngles, GetPower());
 		// 吹っ飛び
-		Vector3 aimVec = aim.transform.localEulerAngles;
-		Vector2 kunaiVec = new Vector2( -1*Mathf.Cos (Mathf.Deg2Rad * aimVec.z) *5.0f ,  -1*Mathf.Sin (Mathf.Deg2Rad * aimVec.z)*10.0f );
-		//Debug.Log(kunaiVec);
-		GetComponent<Rigidbody2D>().AddForce(kunaiVec, ForceMode2D.Impulse);
+		if (!GetComponent<PlayerController> ().isGround) {
+			Vector3 aimVec = aim.transform.localEulerAngles;
+			float h = -1 * Mathf.Cos (Mathf.Deg2Rad * aimVec.z) * Mathf.Max(15.0f - decDash, 0);
+			float v = -1 * Mathf.Sin (Mathf.Deg2Rad * aimVec.z) * Mathf.Max(20.0f - decDash, 0);
+			Vector2 kunaiVec = new Vector2 (h, v);
+			GetComponent<Rigidbody2D> ().AddForce (kunaiVec, ForceMode2D.Impulse);
+			decDash += deltaDash;
+		}
 	}
 	//ダメージ
 	public override void Damage(IDamageGenerator damageGenerator){
