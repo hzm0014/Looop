@@ -111,7 +111,7 @@ public class Player : Character {
 	// 死亡関数
 	public void GameOver () {
 		//記録更新
-		MaxRecord.Instance.SetRecord (DungeonGeneratorII.Instance._floorNum);
+		//MaxRecord.Instance.SetRecord (DungeonGeneratorII.Instance._floorNum);
 		GetComponent<Rigidbody2D> ().AddForce (new Vector2 (100.0f, 100.0f), ForceMode2D.Impulse);
 		GetComponent<BoxCollider2D> ().enabled = false;
 		GetComponent<CircleCollider2D> ().enabled = false;
