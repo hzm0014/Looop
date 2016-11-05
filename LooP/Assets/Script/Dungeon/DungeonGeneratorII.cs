@@ -455,6 +455,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 						obj.transform.localScale = new Vector2 (1, stock);
 						obj.transform.parent = gameObject.transform;
 						stock = 0;
+						obj.transform.SetAsFirstSibling();
 						}
 
 					// 左右のつなぎ目を埋める
@@ -468,6 +469,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 					obj = (GameObject)Instantiate (block, new Vector2 (i + (right - left) * 0.5f, j), new Quaternion ());
 					obj.transform.localScale = new Vector2 (right + left, 1);
 					obj.transform.parent = gameObject.transform;
+					obj.transform.SetAsFirstSibling();
 				}
 			}
 		}
