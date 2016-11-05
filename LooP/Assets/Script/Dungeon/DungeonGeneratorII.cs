@@ -43,7 +43,7 @@ public class DungeonGeneratorII : Singleton<DungeonGeneratorII> {
 	/// ボス戦の周期
 	/// </summary>
 	const int EntryCycle = 3;
-	const int BattleCycle = 10;
+	const int BattleCycle = 5;
 	public GameObject Boss;
 
 	/// <summary>
