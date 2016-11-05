@@ -13,6 +13,11 @@ public class Boss : Enemy {
 	public GameObject child;
 	public int count;
 	public int bornCycle;
+
+	// ボス戦闘中の移動
+	private float radian;
+	private float delaRadian;
+	private float circlesize;
 	
 	// Use this for initialization
 	void Start () {
@@ -37,6 +42,14 @@ public class Boss : Enemy {
 		
 		Move();
 		if (battoleMode) {
+			radian += delaRadian;
+			circlesize += Random.Range (-0.1f, 0.1f) * 3;
+			circlesize = Mathf.Min (circlesize, 8);
+			circlesize = Mathf.Max (circlesize, 4);
+			delaRadian += Random.Range (-0.001f, 0.001f);
+			delaRadian = Mathf.Min (delaRadian, 0.07f);
+			delaRadian = Mathf.Max (delaRadian, 0.03f);
+			transform.localPosition = new Vector2(Mathf.Sin(radian)*circlesize+7.5f, Mathf.Cos(radian)*circlesize+7.5f);
 			count++;
 			if (count > bornCycle) {
 				Instantiate (child, transform.localPosition, new Quaternion());
@@ -103,10 +116,14 @@ public class Boss : Enemy {
 	/// </summary>
 	/// <param name="max_life">Max life.</param>
 	/// <param name="min_life">Minimum life.</param>
-	public void ShiftButtleMode(float max_life, float min_life, int born) {
-		_life = Mathf.Max (max_life - hitCount, min_life);
+	public void ShiftButtleMode (float max_life, float min_life, int floaNum) {
+		max_life = 400 + floaNum * 0.05f -hitCount;
+		min_life = 200 * floaNum * 0.05f;
+		_life = Mathf.Max (max_life, min_life);
 		battoleMode = true;
 		count = 0;
-		bornCycle = born;
+		bornCycle = Mathf.Max (400 - floaNum * 5, 100);
+		delaRadian = 0.05f;
+		circlesize = 6;
 	}
 }
