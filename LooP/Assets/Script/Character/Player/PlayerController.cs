@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
 
 
 		// ジャンプ
-		if (Input.GetAxis ("Jump") >= 1 && isJumoButtom) {
+		if ((Input.GetAxis ("Jump") >= 1 || Input.GetAxis ("Vertical") >= 0.8f)&& isJumoButtom) {
 			isJumoButtom = false;
 			player.Jump (isGround);
 			}
