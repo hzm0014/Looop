@@ -28,11 +28,11 @@ public class Aim : MonoBehaviour {
 			aimReviseCount++;
 			if(aimReviseCount >= ARC_LIMIT_NUM) aimRevise = true;
 		}
-		else if( !aimRevise && -99.0f >= axisV ) {
+		/*else if( !aimRevise && -99.0f >= axisV ) {
 			transform.rotation = Quaternion.Euler (0.0f, 0.0f, -90.0f);
 			aimReviseCount++;
 			if(aimReviseCount >= ARC_LIMIT_NUM) aimRevise = true;
-		}
+		}*/
 		else {
 			transform.rotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Atan2 (Input.GetAxis ("AimV"), Input.GetAxis ("AimH")) * 60);
 			if( !(0.0f >= axisH && 0.0f >= axisV)) {
