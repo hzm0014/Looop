@@ -11,7 +11,7 @@ public class Butachan : Enemy {
 		this._life = 10.0f;
 		this._atk = 1.0f;
 		this.forceSpeed = 0.1f;
-		SetSpeed(0.1f, 0.3f);
+		SetSpeed(0.05f, 0.3f);
 	}
 	
 	public void Jump (bool grounded) {
