@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
 	// 床、壁判定のためのあれこれ
 	public LayerMask whatIsGround;	// 対処になるレイヤ（Land）
-	private bool isGround;		// 地に立つ
+	public bool isGround { set; get;}		// 地に立つ
 	private Vector2 groundA;
 	private Vector2 groundB;
 
@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour {
 		if (!isGround) {
 			isJumoButtom = false;
 		}
+		else
+			GetComponent<Player> ().decDash = 0;
 		// 速度制限
 		if (myRigidbody.velocity.magnitude > maxSpeed)
 			myRigidbody.velocity = Vector3.ClampMagnitude (myRigidbody.velocity, maxSpeed);
